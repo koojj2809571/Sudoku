@@ -25,11 +25,8 @@ namespace UI
 
         public void ClickDeleteItem()
         {
-            LogUtil.Log("1");
             if(Data.CurKey == "")return;
-            LogUtil.Log("2");
             if(Data.dataCtr.numberData.Count == 0) return;
-            LogUtil.Log("3");
             if (!Data.CurItem.editAble) return; 
             Data.CurItem.Value = 0;
         }

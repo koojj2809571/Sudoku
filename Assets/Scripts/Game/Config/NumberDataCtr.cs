@@ -70,6 +70,7 @@ namespace Game.Config
                         usedRow.Add(random.row);
                         usedCol.Add(random.column);
                         random.Value = i;
+                        random.editAble = false;
                     }
                 }
 
@@ -104,9 +105,12 @@ namespace Game.Config
         private void RandomEmpty()
         {
             var nextRandom = new System.Random(_loopTimes);
-            for (var i = 0; i < levelCount; i++)
+            var indexSet = new HashSet<int>();
+            while (indexSet.Count < levelCount)
             {
                 var index = nextRandom.Next(80);
+                indexSet.Add(index);
+                LogUtil.Log($"{index} 数量: {indexSet.Count}");
                 numberData[index].Value = 0;
                 numberData[index].editAble = true;
             }
