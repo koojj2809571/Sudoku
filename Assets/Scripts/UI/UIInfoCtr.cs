@@ -16,13 +16,13 @@ namespace UI
         // Start is called before the first frame update
         private void Start()
         {
-            errorInfo.color = NumberRunData.Instance.errorColor;
+            errorInfo.color = NumberRunData.Instance.colorConf.errorColor;
         }
 
         // Update is called once per frame
         private void Update()
         {
-            if (!NumberRunData.Instance.gamePause)
+            if (!NumberRunData.Instance.dataCtr.gamePause)
             {
                 totalTime += Time.deltaTime;
             }
@@ -46,7 +46,7 @@ namespace UI
 
         private void SetErrorText()
         {
-            var errorTimes = NumberRunData.Instance.errorTimes;
+            var errorTimes = NumberRunData.Instance.dataCtr.errorTimes;
             var showError = errorTimes != 0;
             errorInfo.text = showError ? $"Mistake: {errorTimes}" : "";
         }

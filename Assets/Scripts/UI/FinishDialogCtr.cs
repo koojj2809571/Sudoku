@@ -10,8 +10,7 @@ namespace UI
         
         public void PlayAgain()
         {
-            NumberRunData.Instance.ClearData();
-            NumberRunData.Instance.RandomNumber();
+            NumberRunData.Instance.Generate();
             dialogCtr.HideDialog();
         }
     }

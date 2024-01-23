@@ -15,21 +15,20 @@ namespace UI
 
         private void Update()
         {
-            switcherTag.text = NumberRunData.Instance.isNote ? "On" : "Off";
+            switcherTag.text = NumberRunData.Instance.dataCtr.isNote ? "On" : "Off";
         }
 
         public void ClickRestart()
         {
-            Data.ClearData();
-            Data.RandomNumber();
+            Data.Generate();
         }
 
         public void ClickDeleteItem()
         {
             LogUtil.Log("1");
-            if(Data.curKey == "")return;
+            if(Data.CurKey == "")return;
             LogUtil.Log("2");
-            if(Data.numberData.Count == 0) return;
+            if(Data.dataCtr.numberData.Count == 0) return;
             LogUtil.Log("3");
             if (!Data.CurItem.editAble) return; 
             Data.CurItem.Value = 0;
@@ -37,7 +36,7 @@ namespace UI
 
         public void ClickNoteSwitcher()
         {
-            NumberRunData.Instance.isNote = !NumberRunData.Instance.isNote;
+            NumberRunData.Instance.dataCtr.isNote = !NumberRunData.Instance.dataCtr.isNote;
         }
     }
 }

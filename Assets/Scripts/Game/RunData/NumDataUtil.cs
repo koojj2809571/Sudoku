@@ -17,7 +17,7 @@ namespace Game.RunData
             for (var i = 0; i < 9; i++)
             {
                 result.Add(new List<NumberItem>());
-                result[i].AddRange(data.numberData.FindAll(e =>
+                result[i].AddRange(data.dataCtr.numberData.FindAll(e =>
                 {
                     var temp = region switch
                     {

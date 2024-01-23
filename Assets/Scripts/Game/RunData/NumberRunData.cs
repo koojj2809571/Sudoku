@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using Game.Config;
 using Game.Item;
-using JetBrains.Annotations;
 using UI;
 using UnityEngine;
 using Util;
@@ -11,143 +8,61 @@ namespace Game.RunData
 {
     public class NumberRunData : BaseSingleton<NumberRunData>
     {
+        [Header("颜色配置")]
+        public ColorConfig colorConf;
 
+        [Header("控制器")]
         public UIInfoCtr infoCtr;
         public UIDialogCtr dialogCtr;
-        public Color originBgColor;
-        public Color originTextColor;
-        public Color selectedColor;
-        public Color relationColor;
-        public Color sameColor;
-        public Color errorColor;
-        public List<NumberItem> numberData = new();
-        public List<string> errorKeyCache = new();
-        public int errorTimes;
-        public bool gamePause;
-        public bool isNote;
-        public bool isGenerating;
-        public readonly Dictionary<string, NumberItem> NumDict = new();
 
-        public string curKey = "";
+        [Header("数据配置")] 
+        public NumberDataCtr dataCtr;
 
-        // public readonly NumberItem[,] RowArr = new NumberItem[9,9];
-        // public readonly NumberItem[,] ColArr = new NumberItem[9,9];
+        public Color OriginTextColor(bool editAble)
+        {
+            return editAble ? colorConf.variableTextColor : colorConf.fixTextColor;
+        }
 
-        private int _loopTimes;
-        public List<int> answer = new();
+        [HideInInspector]
+        public InputNumber InputNumberDelegate;
+
+        public string CurKey
+        {
+            get => dataCtr.curKey;
+            set => dataCtr.curKey = value;
+        }
 
         private string[] CurKeyArr
         {
             get
             {
-                return curKey == "" ? new string[] { } : curKey.Split('-');
+                return CurKey == "" ? new string[] { } : CurKey.Split('-');
             }
         }
 
-        private bool CurKeyInvalid => curKey == "" || CurKeyArr.Length != 4;
+        private bool CurKeyInvalid => dataCtr.curKey == "" || CurKeyArr.Length != 4;
 
         public int CurArea => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[0]);
         public int CurRow => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[1]);
         public int CurColumn => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[2]);
         public int CurItemIndex => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[3]);
-        public NumberItem CurItem => NumDict[curKey];
-        
-        public void SortData()
+        public NumberItem CurItem => dataCtr.NumDict[dataCtr.curKey];
+
+        protected new void Awake()
         {
-            numberData.Sort((x,y) => x.itemIndex.CompareTo(y.itemIndex));
+            base.Awake();
+            dataCtr.infoCtr = infoCtr;
         }
 
-
-        public void ClearData()
+        public void Generate()
         {
-            errorTimes = 0;
-            _loopTimes = 0;
-            infoCtr.RestartTimer();
-            answer.Clear();
-            numberData = numberData.Select(e =>
-            {
-                e.Value = 0;
-                return e;
-            }).ToList();
-        }
-
-        // public void RandomNumber()
-        // {
-        //     if(isGenerating) return;
-        //     StartCoroutine(nameof(RandomNumberCoroutine));
-        // }
-        
-        public void RandomNumber()
-        {
-            if(isGenerating) return;
-            var begin = Time.time;
-            isGenerating = true;
-            var count = 0;
-            while (true)
-            {
-                var areas = NumDataUtil.GetDataByRegion(Region.Area);
-
-                for (var i = 1; i <= 9; i++)
-                {
-                    var usedRow = new List<int>();
-                    var usedCol = new List<int>();
-                    foreach (var area in areas)
-                    {
-                        var random = GetRandomItemIndex(area, usedRow, usedCol);
-                        if (random == null) continue;
-                        usedRow.Add(random.row);
-                        usedCol.Add(random.column);
-                        random.Value = i;
-                    }
-                }
-
-                if (numberData.Any(e => e.value == 0))
-                {
-                    ClearData();
-                    count++;
-                    // yield return null;
-                    continue;
-                }
-
-                _loopTimes = count;
-                answer = numberData.Select(e => e.value).ToList();
-                RandomEmpty(30);
-                
-                break;
-            }
-            // yield return count;
-            LogUtil.Log($"循环{count}次, 耗时{Time.time - begin}秒");
-            isGenerating = false;
-            infoCtr.stopTimer = false;
-        }
-
-        [CanBeNull]
-        private NumberItem GetRandomItemIndex(List<NumberItem> area, List<int> row, List<int> col)
-        {
-            var emptyItems = area.FindAll(e => e.value == 0);
-            while (true)
-            {
-                if (emptyItems.Count == 0) return null;
-                var random = Random.Range(0, emptyItems.Count);
-                if (emptyItems[random].value == 0 && !row.Contains(emptyItems[random].row) && !col.Contains(emptyItems[random].column)) return emptyItems[random];
-                emptyItems.RemoveAt(random);
-            }
-        }
-
-        private void RandomEmpty(int levelCount)
-        {
-            var nextRandom = new System.Random(_loopTimes);
-            for (var i = 0; i < levelCount; i++)
-            {
-                var index = nextRandom.Next(80);
-                numberData[index].Value = 0;
-                numberData[index].editAble = true;
-            }
+            dataCtr.ClearData();
+            dataCtr.RandomNumber();
         }
 
         public void CheckSuccess()
         {
-            foreach (var item in numberData)
+            foreach (var item in dataCtr.numberData)
             {
                 if (item.error) return;
                 if (item.value == 0) return;

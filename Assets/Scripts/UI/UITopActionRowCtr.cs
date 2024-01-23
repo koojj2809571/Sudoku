@@ -20,13 +20,13 @@ namespace UI
         
         public void ClickPause()
         {
-            NumberRunData.Instance.gamePause = true;
+            NumberRunData.Instance.dataCtr.gamePause = true;
             pausePanel.ShowDialog(DialogType.Pause);
         }
         
         public void ContinueGame()
         {
-            NumberRunData.Instance.gamePause = false;
+            NumberRunData.Instance.dataCtr.gamePause = false;
             pausePanel.HideDialog();
         }
     }

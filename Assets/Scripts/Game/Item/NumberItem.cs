@@ -36,17 +36,28 @@ namespace Game.Item
         {
             set
             {
-                if (Data.errorKeyCache.Contains(ItemErrorKey))
+                if (Data.dataCtr.errorKeyCache.Contains(ItemErrorKey))
                 {
-                    Data.errorKeyCache.Remove(ItemErrorKey);
+                    Data.dataCtr.errorKeyCache.Remove(ItemErrorKey);
                 }
+
+                var lastValue = this.value;
                 this.value = value;
                 num.text = value != 0 ? this.value.ToString() : "";
-                if (!CheckError()) return;
-                if (!Data.errorKeyCache.Contains(ItemErrorKey) && error)
+                if (lastValue == 0 && value != 0)
                 {
-                    Data.errorKeyCache.Add(ItemErrorKey);
-                    Data.errorTimes += 1;
+                    Data.InputNumberDelegate(value, 1);
+                }
+
+                if (lastValue != 0)
+                {
+                    Data.InputNumberDelegate(lastValue, -1);
+                }
+                if (!CheckError()) return;
+                if (!Data.dataCtr.errorKeyCache.Contains(ItemErrorKey) && error)
+                {
+                    Data.dataCtr.errorKeyCache.Add(ItemErrorKey);
+                    Data.dataCtr.errorTimes += 1;
                 }
 
             }
@@ -94,13 +105,13 @@ namespace Game.Item
             column = (areNumber - 1) * 3 + subItemNumber;
 
             itemIndex = (row - 1) * 9 + column - 1;
-            Data.numberData.Add(this);
-            Data.NumDict.Add(ItemKey, this);
+            Data.dataCtr.numberData.Add(this);
+            Data.dataCtr.NumDict.Add(ItemKey, this);
             // Data.RowArr[row - 1, column - 1] = this;
             // Data.ColArr[column - 1, row - 1] = this;
-            if (Data.numberData.Count < 81) return;
-            Data.SortData();
-            Data.RandomNumber();
+            if (Data.dataCtr.numberData.Count < 81) return;
+            Data.dataCtr.SortData();
+            Data.dataCtr.RandomNumber();
         }
 
         public void ShowNoteItem(int clickNumber)
@@ -123,26 +134,26 @@ namespace Game.Item
 
         private void UpdateItemColor()
         {
-            if(Data.curKey == "") return;
+            if(Data.CurKey == "") return;
             var item = Data.CurItem;
-            if (ItemKey == Data.curKey)
+            if (ItemKey == Data.CurKey)
             {
-                bg.color = Data.selectedColor;
+                bg.color = Data.colorConf.selectedColor;
                 return;
             }
 
             if (value != 0 && item.value == value)
             {
-                bg.color = Data.sameColor;
+                bg.color = Data.colorConf.sameColor;
                 return;
             }
             if (area == Data.CurArea || row == Data.CurRow || column == Data.CurColumn)
             {
-                bg.color = Data.relationColor;
+                bg.color = Data.colorConf.relationColor;
                 return;
             }
             
-            bg.color = Data.originBgColor;
+            bg.color = Data.colorConf.originBgColor;
         }
 
         private bool CheckError()
@@ -160,12 +171,12 @@ namespace Game.Item
         private void UpdateErrorColor()
         {
             CheckError();
-            num.color = error ? Data.errorColor : Data.originTextColor;
+            num.color = error ? Data.colorConf.errorColor : Data.OriginTextColor(editAble);
         }
 
         public void OnItemSelected()
         {
-            NumberRunData.Instance.curKey = ItemKey;
+            NumberRunData.Instance.CurKey = ItemKey;
         }
     }
 }

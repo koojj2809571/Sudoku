@@ -37623,22 +37623,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f0b11f7164a9df43b35eafa89ff16fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorConf:
+    originBgColor: {r: 1, g: 1, b: 1, a: 1}
+    fixTextColor: {r: 0, g: 0, b: 0, a: 1}
+    variableTextColor: {r: 0, g: 0.6392157, b: 1, a: 1}
+    selectedColor: {r: 0.3254902, g: 0.5803922, b: 1, a: 1}
+    relationColor: {r: 0.8000001, g: 0.8000001, b: 0.8000001, a: 1}
+    sameColor: {r: 0.7137255, g: 0.8235295, b: 1, a: 1}
+    errorColor: {r: 1, g: 0.3254902, b: 0.3254902, a: 1}
   infoCtr: {fileID: 968857510}
   dialogCtr: {fileID: 276572626}
-  originBgColor: {r: 1, g: 1, b: 1, a: 1}
-  originTextColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  selectedColor: {r: 0.32704395, g: 0.58127326, b: 1, a: 1}
-  relationColor: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
-  sameColor: {r: 0.71383643, g: 0.8234878, b: 1, a: 1}
-  errorColor: {r: 1, g: 0.32704395, b: 0.32704395, a: 1}
-  numberData: []
-  errorKeyCache: []
-  errorTimes: 0
-  gamePause: 0
-  isNote: 0
-  isGenerating: 0
-  curKey: 
-  answer: 
+  dataCtr:
+    curKey: 
+    levelCount: 30
+    errorTimes: 0
+    gamePause: 0
+    isNote: 0
+    isGenerating: 0
+    errorKeyCache: []
+    numberData: []
+    answer: 
+    infoCtr: {fileID: 0}
 --- !u!4 &740377888
 Transform:
   m_ObjectHideFlags: 0
@@ -51516,6 +51521,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8886920730492676959, guid: 853fe4cd2d24ec240bde76cdedf2064f, type: 3}
       propertyPath: m_Name
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8886920730492676959, guid: 853fe4cd2d24ec240bde76cdedf2064f, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
