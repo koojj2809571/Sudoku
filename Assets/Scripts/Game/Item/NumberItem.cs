@@ -36,24 +36,35 @@ namespace Game.Item
         {
             set
             {
+                //赋值前移除错误记录缓存
                 if (Data.dataCtr.errorKeyCache.Contains(ItemErrorKey))
                 {
                     Data.dataCtr.errorKeyCache.Remove(ItemErrorKey);
                 }
 
+                //记录上一个值
                 var lastValue = this.value;
+                
+                //赋值
                 this.value = value;
                 num.text = value != 0 ? this.value.ToString() : "";
+                
+                //记录数字使用次数
                 if (lastValue == 0 && value != 0)
                 {
                     Data.InputNumberDelegate(value, 1);
                 }
 
+                //清空时扣减上一个数字使用次数
                 if (lastValue != 0)
                 {
                     Data.InputNumberDelegate(lastValue, -1);
                 }
+                
+                //检查数字是否错误
                 if (!CheckError()) return;
+                
+                //记录错误次数并缓存错误item键
                 if (!Data.dataCtr.errorKeyCache.Contains(ItemErrorKey) && error)
                 {
                     Data.dataCtr.errorKeyCache.Add(ItemErrorKey);
@@ -106,7 +117,7 @@ namespace Game.Item
 
             itemIndex = (row - 1) * 9 + column - 1;
             Data.dataCtr.numberData.Add(this);
-            Data.dataCtr.NumDict.Add(ItemKey, this);
+            Data.dataCtr.numDict.Add(ItemKey, this);
             // Data.RowArr[row - 1, column - 1] = this;
             // Data.ColArr[column - 1, row - 1] = this;
             if (Data.dataCtr.numberData.Count < 81) return;
@@ -114,19 +125,6 @@ namespace Game.Item
             Data.dataCtr.RandomNumber();
         }
 
-        public void ShowNoteItem(int clickNumber)
-        {
-            notePanel.noteItems[clickNumber - 1].SetActive(true);
-        }
-        
-        public void HideNoteItem()
-        {
-            foreach (var t in notePanel.noteItems)
-            {
-                t.SetActive(false);
-            }
-        }
-        
         private int GetCountByName(string goName)
         {
             return int.Parse(goName[^1..]);
@@ -177,6 +175,31 @@ namespace Game.Item
         public void OnItemSelected()
         {
             NumberRunData.Instance.CurKey = ItemKey;
+        }
+
+        public void ClearRelationSquareNote()
+        {
+            var sameRow = Data.dataCtr.rowData[row - 1];
+            var sameCol = Data.dataCtr.colData[column - 1];
+            var sameArea = Data.dataCtr.areaData[area - 1];
+            for (var i = 0; i < sameRow.Count; i++)
+            {
+                var rowItem = sameRow[i];
+                var colItem = sameCol[i];
+                var areaItem = sameArea[i];
+                if (rowItem.ItemKey != ItemKey && rowItem.notePanel.ShowNote)
+                {
+                    rowItem.notePanel.SetNoteVisible(this.value, false);
+                }
+                if (colItem.ItemKey != ItemKey && colItem.notePanel.ShowNote)
+                {
+                    colItem.notePanel.SetNoteVisible(this.value, false);
+                }
+                if (areaItem.ItemKey != ItemKey && areaItem.notePanel.ShowNote)
+                {
+                    areaItem.notePanel.SetNoteVisible(this.value, false);
+                }
+            }
         }
     }
 }

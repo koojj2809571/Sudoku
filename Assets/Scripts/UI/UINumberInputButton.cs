@@ -35,13 +35,12 @@ namespace UI
             if(!NumRunData.CurItem.editAble) return;
             if (NumRunData.dataCtr.isNote && NumRunData.CurItem.value == 0)
             {
-                LogUtil.Log($"Edit: {NumText}");
-                NumRunData.CurItem.ShowNoteItem(content);
+                NumRunData.CurItem.notePanel.SetNoteVisible(content, true);
                 return;
             }
-            LogUtil.Log($"Input: {NumText}");
-            NumRunData.CurItem.HideNoteItem();
+            NumRunData.CurItem.notePanel.HideNoteSquare();
             NumRunData.CurItem.Value = content;
+            NumRunData.CurItem.ClearRelationSquareNote();
             NumRunData.CheckSuccess();
         }
 

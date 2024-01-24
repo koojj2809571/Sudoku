@@ -46,7 +46,7 @@ namespace Game.RunData
         public int CurRow => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[1]);
         public int CurColumn => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[2]);
         public int CurItemIndex => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[3]);
-        public NumberItem CurItem => dataCtr.NumDict[dataCtr.curKey];
+        public NumberItem CurItem => dataCtr.numDict[dataCtr.curKey];
 
         protected new void Awake()
         {

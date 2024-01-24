@@ -21,8 +21,11 @@ namespace Game.Config
         public bool isGenerating;
         public List<string> errorKeyCache = new();
         public List<NumberItem> numberData = new();
-        public readonly Dictionary<string, NumberItem> NumDict = new();
+        public readonly Dictionary<string, NumberItem> numDict = new();
         public List<int> answer = new();
+        public List<List<NumberItem>> rowData = new();
+        public List<List<NumberItem>> colData = new();
+        public List<List<NumberItem>> areaData = new();
         
 
         private int _loopTimes;
@@ -83,6 +86,9 @@ namespace Game.Config
 
                 _loopTimes = count;
                 answer = numberData.Select(e => e.value).ToList();
+                rowData = NumDataUtil.GetDataByRegion(Region.Row);
+                colData = NumDataUtil.GetDataByRegion(Region.Column);
+                areaData = NumDataUtil.GetDataByRegion(Region.Area);
                 RandomEmpty();
                 
                 break;
@@ -110,7 +116,6 @@ namespace Game.Config
             {
                 var index = nextRandom.Next(80);
                 indexSet.Add(index);
-                LogUtil.Log($"{index} 数量: {indexSet.Count}");
                 numberData[index].Value = 0;
                 numberData[index].editAble = true;
             }
