@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Item;
 using Game.RunData;
-using JetBrains.Annotations;
 using UI;
 using Util;
-using Random = UnityEngine.Random;
 
 namespace Game.Config
 {
@@ -21,17 +19,20 @@ namespace Game.Config
         public bool isGenerating;
         public List<string> errorKeyCache = new();
         public List<NumberItem> numberData = new();
-        public readonly Dictionary<string, NumberItem> numDict = new();
+        public readonly Dictionary<string, NumberItem> NumDict = new();
         public List<int> answer = new();
-        public List<List<NumberItem>> rowData = new();
-        public List<List<NumberItem>> colData = new();
-        public List<List<NumberItem>> areaData = new();
+        public List<List<NumberItem>> RowData = new();
+        public List<List<NumberItem>> ColData = new();
+        public List<List<NumberItem>> AreaData = new();
         
 
         private int _loopTimes;
         private DateTime _startGenerateTime;
 
         public UIInfoCtr infoCtr;
+
+        private RandomUtil _ranUtil;
+        public RandomUtil RanUtil => _ranUtil ??= new RandomUtil();
 
         public void SortData()
         {
@@ -54,71 +55,47 @@ namespace Game.Config
 
         public void RandomNumber()
         {
+            LogUtil.Log("随机模式");
             if(isGenerating) return;
             _startGenerateTime = DateTime.Now;
             isGenerating = true;
             var count = 0;
-            while (true)
+            
+            RanUtil.RandomOriginNumbers(ref count, ClearData, c =>
             {
-                var areas = NumDataUtil.GetDataByRegion(Region.Area);
-
-                for (var i = 1; i <= 9; i++)
-                {
-                    var usedRow = new List<int>();
-                    var usedCol = new List<int>();
-                    foreach (var area in areas)
-                    {
-                        var random = GetRandomItemIndex(area, usedRow, usedCol);
-                        if (random == null) continue;
-                        usedRow.Add(random.row);
-                        usedCol.Add(random.column);
-                        random.Value = i;
-                        random.editAble = false;
-                    }
-                }
-
-                if (numberData.Any(e => e.value == 0))
-                {
-                    ClearData();
-                    count++;
-                    continue;
-                }
-
-                _loopTimes = count;
+                _loopTimes = c;
                 answer = numberData.Select(e => e.value).ToList();
-                rowData = NumDataUtil.GetDataByRegion(Region.Row);
-                colData = NumDataUtil.GetDataByRegion(Region.Column);
-                areaData = NumDataUtil.GetDataByRegion(Region.Area);
-                RandomEmpty();
-                
-                break;
-            }
+                RowData = NumDataUtil.GetDataByRegion(Region.Row);
+                ColData = NumDataUtil.GetDataByRegion(Region.Column);
+                AreaData = NumDataUtil.GetDataByRegion(Region.Area);
+                RanUtil.RandomEmpty(_loopTimes, levelCount);
+            });
+            
             LogUtil.Log($"循环{count}次, 耗时{(DateTime.Now - _startGenerateTime).TotalSeconds}秒");
             isGenerating = false;
             infoCtr.stopTimer = false;
+            
         }
 
-        [CanBeNull]
-        private NumberItem GetRandomItemIndex(List<NumberItem> area, List<int> row, List<int> col)
+        public void GenerateByLevel()
         {
-            var excludeHasValue = area.FindAll(e => e.value == 0);
-            var excludeSameRow = excludeHasValue.FindAll(e => !row.Contains(e.row));
-            var excludeSameCol = excludeSameRow.FindAll(e => !col.Contains(e.column));
-            var random = Random.Range(0, excludeSameCol.Count);
-            return excludeSameCol.Count == 0 ? null : excludeSameCol[random];
-        }
+            LogUtil.Log("关卡模式");
+            if(isGenerating) return;
+            isGenerating = true;
 
-        private void RandomEmpty()
-        {
-            var nextRandom = new System.Random(_loopTimes);
-            var indexSet = new HashSet<int>();
-            while (indexSet.Count < levelCount)
+            for (var i = 0; i < numberData.Count; i++)
             {
-                var index = nextRandom.Next(80);
-                indexSet.Add(index);
-                numberData[index].Value = 0;
-                numberData[index].editAble = true;
+                numberData[i].Value = LevelRunData.Instance.CurLevel[i];
+                numberData[i].editAble = false;
             }
+            answer = numberData.Select(e => e.value).ToList();
+            RowData = NumDataUtil.GetDataByRegion(Region.Row);
+            ColData = NumDataUtil.GetDataByRegion(Region.Column);
+            AreaData = NumDataUtil.GetDataByRegion(Region.Area);
+            RanUtil.RandomEmpty(LevelRunData.Instance.SelectedLevelIndex, levelCount);
+            
+            infoCtr.stopTimer = false;
+            isGenerating = false;
         }
     }
 }

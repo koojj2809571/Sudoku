@@ -1,4 +1,5 @@
 using Game.RunData;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,13 +53,13 @@ namespace Game.Item
                 //记录数字使用次数
                 if (lastValue == 0 && value != 0)
                 {
-                    Data.InputNumberDelegate(value, 1);
+                    Data.inputNumberDelegate(value, 1);
                 }
 
                 //清空时扣减上一个数字使用次数
                 if (lastValue != 0)
                 {
-                    Data.InputNumberDelegate(lastValue, -1);
+                    Data.inputNumberDelegate(lastValue, -1);
                 }
                 
                 //检查数字是否错误
@@ -117,12 +118,19 @@ namespace Game.Item
 
             itemIndex = (row - 1) * 9 + column - 1;
             Data.dataCtr.numberData.Add(this);
-            Data.dataCtr.numDict.Add(ItemKey, this);
+            Data.dataCtr.NumDict.Add(ItemKey, this);
             // Data.RowArr[row - 1, column - 1] = this;
             // Data.ColArr[column - 1, row - 1] = this;
             if (Data.dataCtr.numberData.Count < 81) return;
             Data.dataCtr.SortData();
-            Data.dataCtr.RandomNumber();
+            if (LevelRunData.Instance.SelectedLevelIndex == -1)
+            {
+                Data.dataCtr.RandomNumber();
+            }
+            else
+            {
+                Data.dataCtr.GenerateByLevel();
+            }
         }
 
         private int GetCountByName(string goName)
@@ -179,9 +187,9 @@ namespace Game.Item
 
         public void ClearRelationSquareNote()
         {
-            var sameRow = Data.dataCtr.rowData[row - 1];
-            var sameCol = Data.dataCtr.colData[column - 1];
-            var sameArea = Data.dataCtr.areaData[area - 1];
+            var sameRow = Data.dataCtr.RowData[row - 1];
+            var sameCol = Data.dataCtr.ColData[column - 1];
+            var sameArea = Data.dataCtr.AreaData[area - 1];
             for (var i = 0; i < sameRow.Count; i++)
             {
                 var rowItem = sameRow[i];

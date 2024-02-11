@@ -25,7 +25,7 @@ namespace UI
             number.text = NumText;
             numberUsedTimes = 0;
             _canClick = true;
-            NumRunData.InputNumberDelegate += OnInputNumber;
+            NumRunData.inputNumberDelegate += OnInputNumber;
         }
 
         public void OnNumBtClick()

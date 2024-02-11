@@ -1,3 +1,4 @@
+using System.Collections;
 using Game.Config;
 using Game.Item;
 using UI;
@@ -24,7 +25,7 @@ namespace Game.RunData
         }
 
         [HideInInspector]
-        public InputNumber InputNumberDelegate;
+        public InputNumber inputNumberDelegate;
 
         public string CurKey
         {
@@ -46,7 +47,7 @@ namespace Game.RunData
         public int CurRow => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[1]);
         public int CurColumn => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[2]);
         public int CurItemIndex => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[3]);
-        public NumberItem CurItem => dataCtr.numDict[dataCtr.curKey];
+        public NumberItem CurItem => dataCtr.NumDict[dataCtr.curKey];
 
         protected new void Awake()
         {
@@ -57,8 +58,16 @@ namespace Game.RunData
         public void Generate()
         {
             dataCtr.ClearData();
-            dataCtr.RandomNumber();
+            if (LevelRunData.Instance.SelectedLevelIndex != -1)
+            {
+                dataCtr.GenerateByLevel();
+            }
+            else
+            {
+                dataCtr.RandomNumber();
+            }
         }
+        
 
         public void CheckSuccess()
         {
