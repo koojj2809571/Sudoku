@@ -1,10 +1,14 @@
+using System.Collections.Generic;
+using DG.Tweening;
 using Game.RunData;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Util;
 
 namespace Game.Item
 {
+    public delegate void NumberBgGradient(List<string> finishNumbers);
     public class NumberItem: MonoBehaviour
     {
 
@@ -20,7 +24,7 @@ namespace Game.Item
         public Image bg;
         public Text num;
 
-        private string ItemKey
+        public string ItemKey
         {
             get
             {
@@ -78,6 +82,19 @@ namespace Game.Item
         private void Start()
         {
             Init();
+            Data.numberGradientDelegate += OnBgGradient;
+        }
+
+        private void OnBgGradient(List<string> finishNumbers)
+        {
+            if (!finishNumbers.Contains(ItemKey)) return;
+            LogUtil.Log($"{ItemKey} 渐变");
+            Tweener doColor = bg.DOColor(Data.colorConf.finishItemGradientColor, 0.3f);
+            doColor.SetAutoKill(false);
+            doColor.OnComplete(() =>
+            {
+                doColor.PlayBackwards();
+            });
         }
 
         private void Update()
@@ -123,7 +140,8 @@ namespace Game.Item
             // Data.ColArr[column - 1, row - 1] = this;
             if (Data.dataCtr.numberData.Count < 81) return;
             Data.dataCtr.SortData();
-            if (LevelRunData.Instance.SelectedLevelIndex == -1)
+            var levelRunData = LevelRunData.Instance;
+            if (levelRunData == null || levelRunData.SelectedLevelIndex == -1)
             {
                 Data.dataCtr.RandomNumber();
             }
@@ -187,9 +205,9 @@ namespace Game.Item
 
         public void ClearRelationSquareNote()
         {
-            var sameRow = Data.dataCtr.RowData[row - 1];
-            var sameCol = Data.dataCtr.ColData[column - 1];
-            var sameArea = Data.dataCtr.AreaData[area - 1];
+            var sameRow = Data.dataCtr.rowData[row - 1];
+            var sameCol = Data.dataCtr.colData[column - 1];
+            var sameArea = Data.dataCtr.areaData[area - 1];
             for (var i = 0; i < sameRow.Count; i++)
             {
                 var rowItem = sameRow[i];

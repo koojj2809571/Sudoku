@@ -21,9 +21,9 @@ namespace Game.Config
         public List<NumberItem> numberData = new();
         public readonly Dictionary<string, NumberItem> NumDict = new();
         public List<int> answer = new();
-        public List<List<NumberItem>> RowData = new();
-        public List<List<NumberItem>> ColData = new();
-        public List<List<NumberItem>> AreaData = new();
+        public List<List<NumberItem>> rowData = new();
+        public List<List<NumberItem>> colData = new();
+        public List<List<NumberItem>> areaData = new();
         
 
         private int _loopTimes;
@@ -65,9 +65,9 @@ namespace Game.Config
             {
                 _loopTimes = c;
                 answer = numberData.Select(e => e.value).ToList();
-                RowData = NumDataUtil.GetDataByRegion(Region.Row);
-                ColData = NumDataUtil.GetDataByRegion(Region.Column);
-                AreaData = NumDataUtil.GetDataByRegion(Region.Area);
+                rowData = NumDataUtil.GetDataByRegion(Region.Row);
+                colData = NumDataUtil.GetDataByRegion(Region.Column);
+                areaData = NumDataUtil.GetDataByRegion(Region.Area);
                 RanUtil.RandomEmpty(_loopTimes, levelCount);
             });
             
@@ -89,9 +89,9 @@ namespace Game.Config
                 numberData[i].editAble = false;
             }
             answer = numberData.Select(e => e.value).ToList();
-            RowData = NumDataUtil.GetDataByRegion(Region.Row);
-            ColData = NumDataUtil.GetDataByRegion(Region.Column);
-            AreaData = NumDataUtil.GetDataByRegion(Region.Area);
+            rowData = NumDataUtil.GetDataByRegion(Region.Row);
+            colData = NumDataUtil.GetDataByRegion(Region.Column);
+            areaData = NumDataUtil.GetDataByRegion(Region.Area);
             RanUtil.RandomEmpty(LevelRunData.Instance.SelectedLevelIndex, levelCount);
             
             infoCtr.stopTimer = false;

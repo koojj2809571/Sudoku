@@ -13,5 +13,6 @@ namespace Game.Config
         public Color relationColor;
         public Color sameColor;
         public Color errorColor;
+        public Color finishItemGradientColor;
     }
 }

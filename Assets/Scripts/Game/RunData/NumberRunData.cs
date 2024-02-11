@@ -1,9 +1,26 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Game.Config;
 using Game.Item;
 using UI;
 using UnityEngine;
 using Util;
+
+/* TODO_LIST
+ *
+ * 完成(√):
+ * 1.关联方快被全部填满时显示颜色渐变动画(行,列,九宫格)
+ *
+ * 待完成(...):
+ * 2.胜利失败弹窗优化动效弹出
+ * 3.关卡模式下胜利弹窗显示两个按钮, 重来和下一关
+ * 4.记录已通关关卡及通关时间
+ * 5.随机模式可选择简单,中等,困难
+ *
+ * 可选完成项(?):
+ * 6.游戏中新增回退操作按钮,回退上一步操作
+ */
 
 namespace Game.RunData
 {
@@ -26,6 +43,9 @@ namespace Game.RunData
 
         [HideInInspector]
         public InputNumber inputNumberDelegate;
+        
+        [HideInInspector]
+        public NumberBgGradient numberGradientDelegate;
 
         public string CurKey
         {
@@ -79,6 +99,30 @@ namespace Game.RunData
 
             infoCtr.stopTimer = true;
             dialogCtr.ShowDialog(DialogType.Finish);
+        }
+
+        public void FindFinishedRelationSquares()
+        {
+            var result = new List<NumberItem>();
+            var relationRowItems = dataCtr.rowData[CurRow - 1];
+            if (relationRowItems.All(e => e.value != 0))
+            {
+                result.AddRange(relationRowItems);
+            }
+            var relationColItems = dataCtr.colData[CurColumn - 1];
+            if (relationColItems.All(e => e.value != 0))
+            {
+                result.AddRange(relationColItems);
+            }
+            var relationAreaItems = dataCtr.areaData[CurArea - 1];
+            if (relationAreaItems.All(e => e.value != 0))
+            {
+                result.AddRange(relationAreaItems);
+            }
+            if (result.Count > 0)
+            {
+                numberGradientDelegate(result.ConvertAll((e) => e.ItemKey));
+            }
         }
     }
 }

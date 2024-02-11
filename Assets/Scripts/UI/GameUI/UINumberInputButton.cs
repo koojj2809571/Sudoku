@@ -1,8 +1,8 @@
 using Game.RunData;
 using UnityEngine;
 using UnityEngine.UI;
-using Util;
 
+// ReSharper disable once CheckNamespace
 namespace UI
 {
 
@@ -41,6 +41,7 @@ namespace UI
             NumRunData.CurItem.notePanel.HideNoteSquare();
             NumRunData.CurItem.Value = content;
             NumRunData.CurItem.ClearRelationSquareNote();
+            NumRunData.FindFinishedRelationSquares();
             NumRunData.CheckSuccess();
         }
 
