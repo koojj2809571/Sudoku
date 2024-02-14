@@ -1,6 +1,7 @@
 using Game.RunData;
 using UnityEngine;
 using UnityEngine.UI;
+using Util;
 
 // ReSharper disable once CheckNamespace
 namespace UI
@@ -50,6 +51,7 @@ namespace UI
             if(numberValue != content) return;
             numberUsedTimes += changeValue;
             _canClick = numberUsedTimes < 9;
+            LogUtil.Log($"{content}使用了{numberUsedTimes.ToString()}次");
             number.text = _canClick ? NumText : "";
         }
     }

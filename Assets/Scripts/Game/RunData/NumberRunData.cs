@@ -13,9 +13,9 @@ using Util;
  * 1.关联方快被全部填满时显示颜色渐变动画(行,列,九宫格)
  * 2.胜利失败弹窗优化动效弹出
  * 3.关卡模式下胜利弹窗显示两个按钮, 重来和下一关
+ * 4.记录已通关关卡及通关时间
  *
  * 待完成(...):
- * 4.记录已通关关卡及通关时间
  * 5.随机模式可选择简单,中等,困难
  *
  * 可选完成项(?):
@@ -89,6 +89,7 @@ namespace Game.RunData
 
             GameUIManager.Instance.uiInfoCtr.stopTimer = true;
             GameUIManager.Instance.uiDialogCtr.ShowDialog(DialogType.FinishWithSuccess);
+            LevelRunData.Instance.UpdateLevelResult(GameUIManager.Instance.uiInfoCtr.time.text);
         }
 
         public void FindFinishedRelationSquares()

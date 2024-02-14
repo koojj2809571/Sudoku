@@ -29,7 +29,9 @@ namespace UI
 
         public void NextLevel()
         {
-            
+            LevelRunData.Instance.SelectedLevelIndex += 1;
+            NumberRunData.Instance.Generate();
+            GameUIManager.Instance.uiDialogCtr.HideDialog();
         }
 
         public void SetFinishType(DialogType type)

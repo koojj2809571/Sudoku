@@ -22,6 +22,7 @@ namespace Game.Item
         public bool error;
 
         public Image bg;
+        public Image aniMask;
         public Text num;
 
         public string ItemKey
@@ -93,7 +94,7 @@ namespace Game.Item
         {
             if (!finishNumbers.Contains(ItemKey)) return;
             LogUtil.Log($"{ItemKey} 渐变");
-            Tweener doColor = bg.DOColor(Data.colorConf.finishItemGradientColor, 0.3f);
+            Tweener doColor = aniMask.DOColor(Data.colorConf.finishItemGradientColor, 0.3f);
             doColor.SetAutoKill(false);
             doColor.OnComplete(() =>
             {

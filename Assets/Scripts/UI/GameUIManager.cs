@@ -1,4 +1,4 @@
-using UnityEngine;
+using TMPro;
 using Util;
 
 namespace UI
@@ -10,5 +10,12 @@ namespace UI
         public UIInfoCtr uiInfoCtr;
         public UIMiddleActionRowCtr uiMiddleActionRowCtr;
         public UITopActionRowCtr uiTopActionRowCtr;
+        public TMP_Text levelName;
+
+        private void Start()
+        {
+            var levelIndex = LevelRunData.Instance.SelectedLevelIndex;
+            levelName.text = levelIndex == -1 ? "Daily Challenge" : $"Level {levelIndex + 1}";
+        }
     }
 }
