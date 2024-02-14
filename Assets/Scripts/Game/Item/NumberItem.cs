@@ -74,6 +74,10 @@ namespace Game.Item
                 {
                     Data.dataCtr.errorKeyCache.Add(ItemErrorKey);
                     Data.dataCtr.errorTimes += 1;
+                    if (Data.dataCtr.errorTimes >= 5)
+                    {
+                        GameUIManager.Instance.uiDialogCtr.ShowDialog(DialogType.FinishWithFail);
+                    }
                 }
 
             }

@@ -3,7 +3,7 @@ using Util;
 
 namespace UI
 {
-    public class UIManager : BaseSingleton<UIManager>
+    public class StartUIManager : BaseSingleton<StartUIManager>
     {
 
         public LevelRunData LevelData => LevelRunData.Instance;

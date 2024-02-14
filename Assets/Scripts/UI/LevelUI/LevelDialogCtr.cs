@@ -40,7 +40,7 @@ namespace UI
 
         private void InitLevelData()
         {
-            var levelData = UIManager.Instance.LevelData;
+            var levelData = StartUIManager.Instance.LevelData;
             for (var i = 0; i < levelData.Level.Count; i++)
             {
                 var itemGo = Instantiate(levelItem, levelParent.transform, true);

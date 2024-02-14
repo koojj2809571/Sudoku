@@ -11,10 +11,10 @@ using Util;
  *
  * 完成(√):
  * 1.关联方快被全部填满时显示颜色渐变动画(行,列,九宫格)
- *
- * 待完成(...):
  * 2.胜利失败弹窗优化动效弹出
  * 3.关卡模式下胜利弹窗显示两个按钮, 重来和下一关
+ *
+ * 待完成(...):
  * 4.记录已通关关卡及通关时间
  * 5.随机模式可选择简单,中等,困难
  *
@@ -28,10 +28,6 @@ namespace Game.RunData
     {
         [Header("颜色配置")]
         public ColorConfig colorConf;
-
-        [Header("控制器")]
-        public UIInfoCtr infoCtr;
-        public UIDialogCtr dialogCtr;
 
         [Header("数据配置")] 
         public NumberDataCtr dataCtr;
@@ -69,12 +65,6 @@ namespace Game.RunData
         public int CurItemIndex => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[3]);
         public NumberItem CurItem => dataCtr.NumDict[dataCtr.curKey];
 
-        protected new void Awake()
-        {
-            base.Awake();
-            dataCtr.infoCtr = infoCtr;
-        }
-
         public void Generate()
         {
             dataCtr.ClearData();
@@ -97,8 +87,8 @@ namespace Game.RunData
                 if (item.value == 0) return;
             }
 
-            infoCtr.stopTimer = true;
-            dialogCtr.ShowDialog(DialogType.Finish);
+            GameUIManager.Instance.uiInfoCtr.stopTimer = true;
+            GameUIManager.Instance.uiDialogCtr.ShowDialog(DialogType.FinishWithSuccess);
         }
 
         public void FindFinishedRelationSquares()

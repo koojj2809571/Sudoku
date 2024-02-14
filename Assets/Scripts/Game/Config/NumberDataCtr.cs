@@ -29,8 +29,6 @@ namespace Game.Config
         private int _loopTimes;
         private DateTime _startGenerateTime;
 
-        public UIInfoCtr infoCtr;
-
         private RandomUtil _ranUtil;
         public RandomUtil RanUtil => _ranUtil ??= new RandomUtil();
 
@@ -44,7 +42,7 @@ namespace Game.Config
         {
             errorTimes = 0;
             _loopTimes = 0;
-            infoCtr.RestartTimer();
+            GameUIManager.Instance.uiInfoCtr.RestartTimer();
             answer.Clear();
             numberData = numberData.Select(e =>
             {
@@ -73,7 +71,7 @@ namespace Game.Config
             
             LogUtil.Log($"循环{count}次, 耗时{(DateTime.Now - _startGenerateTime).TotalSeconds}秒");
             isGenerating = false;
-            infoCtr.stopTimer = false;
+            GameUIManager.Instance.uiInfoCtr.stopTimer = false;
             
         }
 
@@ -94,7 +92,7 @@ namespace Game.Config
             areaData = NumDataUtil.GetDataByRegion(Region.Area);
             RanUtil.RandomEmpty(LevelRunData.Instance.SelectedLevelIndex, levelCount);
             
-            infoCtr.stopTimer = false;
+            GameUIManager.Instance.uiInfoCtr.stopTimer = false;
             isGenerating = false;
         }
     }

@@ -2,6 +2,7 @@ using Game.RunData;
 using UnityEngine;
 using UnityEngine.UI;
 
+// ReSharper disable once CheckNamespace
 namespace UI
 {
     public class UIInfoCtr : MonoBehaviour

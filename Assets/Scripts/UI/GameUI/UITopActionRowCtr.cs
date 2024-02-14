@@ -2,6 +2,7 @@ using Game.RunData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// ReSharper disable once CheckNamespace
 namespace UI
 {
     public class UITopActionRowCtr : MonoBehaviour
@@ -20,14 +21,13 @@ namespace UI
         
         public void ClickPause()
         {
-            NumberRunData.Instance.dataCtr.gamePause = true;
-            pausePanel.ShowDialog(DialogType.Pause);
+            GameUIManager.Instance.uiDialogCtr.ShowDialog(DialogType.Pause);
         }
         
         public void ContinueGame()
         {
             NumberRunData.Instance.dataCtr.gamePause = false;
-            pausePanel.HideDialog();
+            GameUIManager.Instance.uiDialogCtr.HideDialog();
         }
     }
 }

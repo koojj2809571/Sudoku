@@ -1,11 +1,14 @@
 using System;
+using DG.Tweening;
+using Game.RunData;
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace UI
 {
     public enum DialogType
     {
-        Pause, Finish
+        Pause, FinishWithSuccess, FinishWithFail 
     }
     public class UIDialogCtr : MonoBehaviour
     {
@@ -13,28 +16,20 @@ namespace UI
         public GameObject pausePanel;
         public GameObject finishPanel;
         
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-
         public void ShowDialog(DialogType type)
         {
+            NumberRunData.Instance.dataCtr.gamePause = true;
             gameObject.SetActive(true);
             switch (type)
             {
                 case DialogType.Pause:
                     pausePanel.SetActive(true);
                     break;
-                case DialogType.Finish:
+                case DialogType.FinishWithFail:
+                case DialogType.FinishWithSuccess:
                     finishPanel.SetActive(true);
+                    GameUIManager.Instance.finishDialogCtr.SetFinishType(type);
+                    finishPanel.GetComponent<RectTransform>().DOLocalRotate(Vector3.zero, 1f);
                     break;
                 default:
                     gameObject.SetActive(false);
