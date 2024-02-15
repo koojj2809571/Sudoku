@@ -15,11 +15,13 @@ using Util;
  * 3.关卡模式下胜利弹窗显示两个按钮, 重来和下一关
  * 4.记录已通关关卡及通关时间
  * 5.随机模式可选择简单,中等,困难
+ * 6.按100个关卡为9X9的矩阵种子, 以变换矩阵(交换大小行/大小列/数字,矩阵装置)形式生成随机游戏,提高生成速度,日常挑战保证随机结果当日不变化
  *
  * 待完成(...):
+ * 42,43,44关卡数据生成错误带修正
  *
  * 可选完成项(?):
- * 6.游戏中新增回退操作按钮,回退上一步操作
+ * 7.游戏中新增回退操作按钮,回退上一步操作
  */
 
 namespace Game.RunData
@@ -68,14 +70,7 @@ namespace Game.RunData
         public void Generate()
         {
             dataCtr.ClearData();
-            if (LevelRunData.Instance.SelectedLevelIndex != -1)
-            {
-                dataCtr.GenerateByLevel();
-            }
-            else
-            {
-                dataCtr.RandomNumber();
-            }
+            dataCtr.GenerateBySeed();
         }
         
 

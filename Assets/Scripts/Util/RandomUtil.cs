@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Game.Item;
 using Game.RunData;
 using JetBrains.Annotations;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Util
@@ -72,6 +72,14 @@ namespace Util
                 NumberData[index].Value = 0;
                 NumberData[index].editAble = true;
             }
+        }
+
+        public List<int> FindColIndexList(int colIndex)
+        {
+            var result = new List<int>();
+            var matrix4X4 = new Matrix4x4();
+            var transpose = matrix4X4.transpose;
+            return result;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using Util;
 
@@ -14,8 +15,14 @@ namespace UI
 
         private void Start()
         {
-            var levelIndex = LevelRunData.Instance.SelectedLevelIndex;
+            var levelIndex = LevelRunData.Instance.SelectedGameIndex;
             levelName.text = levelIndex == -1 ? "Daily Challenge" : $"Level {levelIndex + 1}";
         }
+
+        // private void Update()
+        // {
+        //     var levelIndex = LevelRunData.Instance.SelectedGameIndex;
+        //     levelName.text = levelIndex == -1 ? "Daily Challenge" : $"Level {levelIndex + 1}";
+        // }
     }
 }

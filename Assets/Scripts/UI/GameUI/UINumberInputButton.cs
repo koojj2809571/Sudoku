@@ -51,7 +51,6 @@ namespace UI
             if(numberValue != content) return;
             numberUsedTimes += changeValue;
             _canClick = numberUsedTimes < 9;
-            LogUtil.Log($"{content}使用了{numberUsedTimes.ToString()}次");
             number.text = _canClick ? NumText : "";
         }
     }

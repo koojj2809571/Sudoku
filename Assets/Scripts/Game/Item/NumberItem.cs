@@ -146,13 +146,13 @@ namespace Game.Item
             if (Data.dataCtr.numberData.Count < 81) return;
             Data.dataCtr.SortData();
             var levelRunData = LevelRunData.Instance;
-            if (levelRunData == null || levelRunData.SelectedLevelIndex == -1)
+            if (levelRunData == null)
             {
                 Data.dataCtr.RandomNumber();
             }
             else
             {
-                Data.dataCtr.GenerateByLevel();
+                Data.dataCtr.GenerateBySeed();
             }
         }
 

@@ -12,7 +12,6 @@ namespace Game.Config
     public class NumberDataCtr
     {
         public string curKey = "";
-        public int levelCount = 30;
         public int errorTimes;
         public bool gamePause;
         public bool isNote;
@@ -36,7 +35,7 @@ namespace Game.Config
         {
             get
             {
-                var curLevel = LevelRunData.Instance.SelectedLevelIndex;
+                var curLevel = LevelRunData.Instance.SelectedGameIndex;
                 if (curLevel != -1)
                 {
                     return curLevel switch
@@ -48,7 +47,7 @@ namespace Game.Config
                     };
                 }
 
-                return LevelRunData.Instance.DiffLevel != -1 ? LevelRunData.Instance.DiffLevel : levelCount;
+                return LevelRunData.Instance.diffLevel != -1 ? LevelRunData.Instance.diffLevel : 30;
             }
         }
 
@@ -95,22 +94,28 @@ namespace Game.Config
             
         }
 
-        public void GenerateByLevel()
+        public void GenerateBySeed()
         {
-            LogUtil.Log("关卡模式");
             if(isGenerating) return;
             isGenerating = true;
 
+            var curGame = LevelRunData.Instance.CurGame;
+            if (curGame.Count == 0)
+            {
+                RandomNumber();
+                return;
+            }
+            
             for (var i = 0; i < numberData.Count; i++)
             {
-                numberData[i].Value = LevelRunData.Instance.CurLevel[i];
+                numberData[i].Value = curGame[i];
                 numberData[i].editAble = false;
             }
             answer = numberData.Select(e => e.value).ToList();
             RowData = NumDataUtil.GetDataByRegion(Region.Row);
             ColData = NumDataUtil.GetDataByRegion(Region.Column);
             AreaData = NumDataUtil.GetDataByRegion(Region.Area);
-            RanUtil.RandomEmpty(LevelRunData.Instance.SelectedLevelIndex, levelCount);
+            RanUtil.RandomEmpty(LevelRunData.Instance.RanSeed, LevelCount);
             
             GameUIManager.Instance.uiInfoCtr.stopTimer = false;
             isGenerating = false;

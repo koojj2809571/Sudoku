@@ -34,7 +34,7 @@ namespace UI
         private void InitLevelData()
         {
             var levelData = LevelRunData.Instance;
-            for (var i = 0; i < levelData.Level.Count; i++)
+            for (var i = 0; i < levelData.GameSeed.Count; i++)
             {
                 var itemGo = Instantiate(levelItem, levelParent.transform, true);
                 var item = itemGo.GetComponent<LevelItem>();
@@ -44,9 +44,9 @@ namespace UI
                 rectTrans.anchoredPosition3D = pos;
                 rectTrans.localScale = Vector3.one;
                 item.SetLevel(i + 1);
-                if (levelData.LevelResult.Keys.Contains(i))
+                if (levelData.GameResult.Keys.Contains(i))
                 {
-                    item.SetFinish(levelData.LevelResult[i]);
+                    item.SetFinish(levelData.GameResult[i]);
                 }
                 if (transform == null) continue;
                 rectTrans.localScale = Vector3.one;

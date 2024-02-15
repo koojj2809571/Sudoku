@@ -22,6 +22,7 @@ namespace UI
         public void ClickPause()
         {
             GameUIManager.Instance.uiDialogCtr.ShowDialog(DialogType.Pause);
+            // GameUIManager.Instance.finishDialogCtr.NextLevel();
         }
         
         public void ContinueGame()

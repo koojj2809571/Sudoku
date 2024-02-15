@@ -26,7 +26,7 @@ namespace UI.LevelUI
 
         public void SelectCurrentLevel()
         {
-            LevelRunData.Instance.SelectedLevelIndex = _curLevel - 1;
+            LevelRunData.Instance.SelectedGameIndex = _curLevel - 1;
             SceneManager.LoadScene(1);
         }
     }

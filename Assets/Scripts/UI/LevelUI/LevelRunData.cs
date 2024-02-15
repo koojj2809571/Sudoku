@@ -7,61 +7,81 @@ namespace UI
 {
     public class LevelRunData: BaseSingleton<LevelRunData>
     {
-        private static List<List<int>> _levels = new();
+        private static List<List<int>> _gameSeeds = new();
 
-        private Dictionary<int, string> _levelResult;
+        private Dictionary<int, string> _gameResult;
 
-        public List<List<int>> Level => _levels;
+        public List<List<int>> GameSeed => _gameSeeds;
 
-        public int SelectedLevelIndex { get; set; } = -1;
-
-        public int DiffLevel { get; set; } = -1;
-
-        public List<int> CurLevel => SelectedLevelIndex == -1 ? new List<int>() : _levels[SelectedLevelIndex];
+        public int SelectedGameIndex { get; set; } = -1;
         
-        public Dictionary<int,string> LevelResult
+        public int diffLevel = -1;
+
+        private int _ranSeed = -1;
+        public int RanSeed
+        {
+            get => SelectedGameIndex != -1 ? SelectedGameIndex : _ranSeed;
+            set => _ranSeed = value;
+        }
+
+        public List<int> RandomGame { get; set; }
+
+        public List<int> CurGame
         {
             get
             {
-                if (_levelResult != null) return _levelResult;
-                _levelResult = new Dictionary<int,string>();
+                if (SelectedGameIndex != -1)
+                {
+                    return _gameSeeds[SelectedGameIndex];
+                }
+
+                return RandomGame ?? new List<int>();
+            }
+        }
+
+        public Dictionary<int,string> GameResult
+        {
+            get
+            {
+                if (_gameResult != null) return _gameResult;
+                _gameResult = new Dictionary<int,string>();
                 var data = AssetsUtil.LevelResultData;
-                if (data.Count <= 0) return _levelResult;
+                if (data.Count <= 0) return _gameResult;
                 foreach (var split in data.Select(e => e.Split("-")))
                 {
-                    _levelResult.Add(int.Parse(split[0]), split[1]);
+                    _gameResult.Add(int.Parse(split[0]), split[1]);
                 }
-                return _levelResult;
+                return _gameResult;
             }
         }
 
         public void UpdateLevelResult(string finishTime)
         {
-            var hasRecord = _levelResult.ContainsKey(SelectedLevelIndex);
+            var hasRecord = _gameResult.ContainsKey(SelectedGameIndex);
 
             bool needUpdate;
             if (hasRecord)
             {
-                needUpdate = NeedUpdate(_levelResult[SelectedLevelIndex], finishTime);
+                needUpdate = NeedUpdate(_gameResult[SelectedGameIndex], finishTime);
                 if (needUpdate)
                 {
-                    _levelResult[SelectedLevelIndex] = finishTime;
+                    _gameResult[SelectedGameIndex] = finishTime;
                 }
             }
             else
             {
                 needUpdate = true;
-                _levelResult.Add(SelectedLevelIndex, finishTime);
+                _gameResult.Add(SelectedGameIndex, finishTime);
             }
             if(!needUpdate) return;
-            var result = _levelResult.Select(kv => $"{kv.Key}-{kv.Value}").ToList();
+            var result = _gameResult.Select(kv => $"{kv.Key}-{kv.Value}").ToList();
             AssetsUtil.LevelResultData = result;
         }
 
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
-            _levels = AssetsUtil.LevelData;
+            _gameSeeds = AssetsUtil.LevelData;
         }
 
         private bool NeedUpdate(string lastTime, string newTime)

@@ -2,6 +2,7 @@ using System;
 using Game.RunData;
 using UnityEngine;
 using UnityEngine.UI;
+using Util;
 
 // ReSharper disable once CheckNamespace
 namespace UI
@@ -29,7 +30,12 @@ namespace UI
 
         public void NextLevel()
         {
-            LevelRunData.Instance.SelectedLevelIndex += 1;
+            LevelRunData.Instance.SelectedGameIndex += 1;
+            if (LevelRunData.Instance.SelectedGameIndex >= LevelRunData.Instance.GameSeed.Count)
+            {
+                GameUIManager.Instance.uiTopActionRowCtr.ClickBack();
+                return;
+            }
             NumberRunData.Instance.Generate();
             GameUIManager.Instance.uiDialogCtr.HideDialog();
         }
@@ -42,7 +48,7 @@ namespace UI
                     finishIcon.sprite = success;
                     dialogTitle.text = successText;
                     againBt.gameObject.SetActive(true);
-                    nextBt.gameObject.SetActive(LevelRunData.Instance.SelectedLevelIndex != -1);
+                    nextBt.gameObject.SetActive(LevelRunData.Instance.SelectedGameIndex != -1);
                     break;
                 case DialogType.FinishWithFail:
                     finishIcon.sprite = fail;
