@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // ReSharper disable once CheckNamespace
 namespace UI
@@ -9,9 +11,20 @@ namespace UI
     {
 
         public LevelDialogCtr levelCtr;
-        
-        public void ClickPlay()
+        public Text finishLevelText;
+
+        private void Start()
         {
+            var levelCount = LevelRunData.Instance.LevelResult.Count;
+            if (levelCount != 0)
+            {
+                finishLevelText.text = $"{levelCount} / 100";
+            }
+        }
+
+        public void ClickPlay(int level)
+        {
+            LevelRunData.Instance.DiffLevel = level;
             LevelRunData.Instance.SelectedLevelIndex = -1;
             SceneManager.LoadScene(1);
         }

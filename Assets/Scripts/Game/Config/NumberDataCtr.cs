@@ -21,9 +21,9 @@ namespace Game.Config
         public List<NumberItem> numberData = new();
         public readonly Dictionary<string, NumberItem> NumDict = new();
         public List<int> answer = new();
-        public List<List<NumberItem>> rowData = new();
-        public List<List<NumberItem>> colData = new();
-        public List<List<NumberItem>> areaData = new();
+        public List<List<NumberItem>> RowData = new();
+        public List<List<NumberItem>> ColData = new();
+        public List<List<NumberItem>> AreaData = new();
         
 
         private int _loopTimes;
@@ -31,6 +31,26 @@ namespace Game.Config
 
         private RandomUtil _ranUtil;
         public RandomUtil RanUtil => _ranUtil ??= new RandomUtil();
+        
+        public int LevelCount
+        {
+            get
+            {
+                var curLevel = LevelRunData.Instance.SelectedLevelIndex;
+                if (curLevel != -1)
+                {
+                    return curLevel switch
+                    {
+                        <= 25 => 28,
+                        <= 50 => 36,
+                        <= 75 => 45,
+                        _ => 54
+                    };
+                }
+
+                return LevelRunData.Instance.DiffLevel != -1 ? LevelRunData.Instance.DiffLevel : levelCount;
+            }
+        }
 
         public void SortData()
         {
@@ -63,10 +83,10 @@ namespace Game.Config
             {
                 _loopTimes = c;
                 answer = numberData.Select(e => e.value).ToList();
-                rowData = NumDataUtil.GetDataByRegion(Region.Row);
-                colData = NumDataUtil.GetDataByRegion(Region.Column);
-                areaData = NumDataUtil.GetDataByRegion(Region.Area);
-                RanUtil.RandomEmpty(_loopTimes, levelCount);
+                RowData = NumDataUtil.GetDataByRegion(Region.Row);
+                ColData = NumDataUtil.GetDataByRegion(Region.Column);
+                AreaData = NumDataUtil.GetDataByRegion(Region.Area);
+                RanUtil.RandomEmpty(_loopTimes, LevelCount);
             });
             
             LogUtil.Log($"循环{count}次, 耗时{(DateTime.Now - _startGenerateTime).TotalSeconds}秒");
@@ -87,9 +107,9 @@ namespace Game.Config
                 numberData[i].editAble = false;
             }
             answer = numberData.Select(e => e.value).ToList();
-            rowData = NumDataUtil.GetDataByRegion(Region.Row);
-            colData = NumDataUtil.GetDataByRegion(Region.Column);
-            areaData = NumDataUtil.GetDataByRegion(Region.Area);
+            RowData = NumDataUtil.GetDataByRegion(Region.Row);
+            ColData = NumDataUtil.GetDataByRegion(Region.Column);
+            AreaData = NumDataUtil.GetDataByRegion(Region.Area);
             RanUtil.RandomEmpty(LevelRunData.Instance.SelectedLevelIndex, levelCount);
             
             GameUIManager.Instance.uiInfoCtr.stopTimer = false;

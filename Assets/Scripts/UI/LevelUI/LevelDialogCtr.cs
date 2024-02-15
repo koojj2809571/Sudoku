@@ -15,7 +15,6 @@ namespace UI
         private static float SW => Screen.width;
         private static float SH => Screen.height;
         
-        // Start is called before the first frame update
         private void Start()
         {
             _rectTrans = GetComponent<RectTransform>();
@@ -27,12 +26,6 @@ namespace UI
             InitLevelData();
         }
         
-        // Update is called once per frame
-        private void Update()
-        {
-        
-        }
-
         public void DialogSwitcher(bool open)
         {
             _rectTrans.DOAnchorPos(new Vector2(0, open ? -30 : -SH), 0.5f, true);
@@ -40,7 +33,7 @@ namespace UI
 
         private void InitLevelData()
         {
-            var levelData = StartUIManager.Instance.LevelData;
+            var levelData = LevelRunData.Instance;
             for (var i = 0; i < levelData.Level.Count; i++)
             {
                 var itemGo = Instantiate(levelItem, levelParent.transform, true);

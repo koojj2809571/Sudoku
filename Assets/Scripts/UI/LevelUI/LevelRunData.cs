@@ -7,7 +7,7 @@ namespace UI
 {
     public class LevelRunData: BaseSingleton<LevelRunData>
     {
-        private static List<List<int>> _levels;
+        private static List<List<int>> _levels = new();
 
         private Dictionary<int, string> _levelResult;
 
@@ -15,9 +15,9 @@ namespace UI
 
         public int SelectedLevelIndex { get; set; } = -1;
 
-        public List<int> CurLevel => SelectedLevelIndex == -1 ? new List<int>() : _levels[SelectedLevelIndex];
+        public int DiffLevel { get; set; } = -1;
 
-        
+        public List<int> CurLevel => SelectedLevelIndex == -1 ? new List<int>() : _levels[SelectedLevelIndex];
         
         public Dictionary<int,string> LevelResult
         {
