@@ -72,7 +72,7 @@ namespace Game.Config
 
         public void RandomNumber()
         {
-            LogUtil.Log("随机模式");
+            DebugUtil.Log("随机模式");
             if(isGenerating) return;
             _startGenerateTime = DateTime.Now;
             isGenerating = true;
@@ -88,7 +88,7 @@ namespace Game.Config
                 RanUtil.RandomEmpty(_loopTimes, LevelCount);
             });
             
-            LogUtil.Log($"循环{count}次, 耗时{(DateTime.Now - _startGenerateTime).TotalSeconds}秒");
+            DebugUtil.Log($"循环{count}次, 耗时{(DateTime.Now - _startGenerateTime).TotalSeconds}秒");
             isGenerating = false;
             GameUIManager.Instance.uiInfoCtr.stopTimer = false;
             

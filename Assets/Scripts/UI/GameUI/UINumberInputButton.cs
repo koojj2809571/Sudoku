@@ -1,7 +1,6 @@
 using Game.RunData;
 using UnityEngine;
 using UnityEngine.UI;
-using Util;
 
 // ReSharper disable once CheckNamespace
 namespace UI

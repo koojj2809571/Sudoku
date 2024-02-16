@@ -1,8 +1,6 @@
-using System;
 using Game.RunData;
 using UnityEngine;
 using UnityEngine.UI;
-using Util;
 
 // ReSharper disable once CheckNamespace
 namespace UI
@@ -30,8 +28,12 @@ namespace UI
 
         public void NextLevel()
         {
-            LevelRunData.Instance.SelectedGameIndex += 1;
-            if (LevelRunData.Instance.SelectedGameIndex >= LevelRunData.Instance.GameSeed.Count)
+            
+            if (LevelRunData.Instance.SelectedGameIndex < LevelRunData.Instance.GameSeed.Count - 1)
+            {
+                LevelRunData.Instance.SelectedGameIndex += 1;
+            }
+            else
             {
                 GameUIManager.Instance.uiTopActionRowCtr.ClickBack();
                 return;

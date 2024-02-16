@@ -133,7 +133,7 @@ namespace Util
         {
             if (index >= 9 || anotherIndex >= 9 || index < 0 || anotherIndex < 0 || Math.Abs(anotherIndex - index) >= 3)
             {
-                LogUtil.Log("Matrix9X9.SwapRow()方法参数异常");
+                DebugUtil.Log("Matrix9X9.SwapRow()方法参数异常");
                 return;
             }
             var temp = _rows[$"R{index}"].ToList();
@@ -154,7 +154,7 @@ namespace Util
         {
             if (index >= 3 || anotherIndex >= 3 || index < 0 || anotherIndex < 0)
             {
-                LogUtil.Log("Matrix9X9.SwapBigRow()方法参数异常");
+                DebugUtil.Log("Matrix9X9.SwapBigRow()方法参数异常");
                 return;
             }
 
@@ -185,7 +185,7 @@ namespace Util
         {
             if (index >= 9 || anotherIndex >= 9 || index < 0 || anotherIndex < 0 || Math.Abs(anotherIndex - index) >= 3)
             {
-                LogUtil.Log("Matrix9X9.SwapCol()方法参数异常");
+                DebugUtil.Log("Matrix9X9.SwapCol()方法参数异常");
                 return;
             }
             var temp = _cols[$"C{index}"].ToList();
@@ -205,7 +205,7 @@ namespace Util
         {
             if (index >= 3 || anotherIndex >= 3 || index < 0 || anotherIndex < 0)
             {
-                LogUtil.Log("Matrix9X9.SwapBigCol()方法参数异常");
+                DebugUtil.Log("Matrix9X9.SwapBigCol()方法参数异常");
                 return;
             }
             var indexList = GetBigIndexList(index);
@@ -236,7 +236,7 @@ namespace Util
         {
             if (num > 9 || anotherNum > 9 || num < 1 || anotherNum < 1)
             {
-                LogUtil.Log("Matrix9X9.SwapNumber()方法参数异常");
+                DebugUtil.Log("Matrix9X9.SwapNumber()方法参数异常");
                 return;
             }
 
@@ -270,7 +270,7 @@ namespace Util
         {
             if (transTimes < 1 || transTimes > Enum.GetValues(typeof(TransformType)).Length)
             {
-                LogUtil.Log("Matrix9X9.RandomTransform()方法参数异常");
+                DebugUtil.Log("Matrix9X9.RandomTransform()方法参数异常");
                 return;
             }
 

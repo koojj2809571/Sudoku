@@ -4,7 +4,6 @@ using Game.RunData;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
-using Util;
 
 namespace Game.Item
 {
@@ -93,7 +92,6 @@ namespace Game.Item
         private void OnBgGradient(List<string> finishNumbers)
         {
             if (!finishNumbers.Contains(ItemKey)) return;
-            LogUtil.Log($"{ItemKey} 渐变");
             Tweener doColor = aniMask.DOColor(Data.colorConf.finishItemGradientColor, 0.3f);
             doColor.SetAutoKill(false);
             doColor.OnComplete(() =>

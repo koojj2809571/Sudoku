@@ -46,14 +46,9 @@ namespace UI
             LevelRunData.Instance.RanSeed = seed;
             var ran = new System.Random(seed);
             var gameIndex = ran.Next(81);
-            LogUtil.Log(gameIndex.ToString());
-            LogUtil.Log(LevelRunData.Instance.GameSeed[gameIndex].LogStr());
             
             var gameTransformer = new Matrix9X9(LevelRunData.Instance.GameSeed[gameIndex]);
-            LogUtil.Log(gameTransformer.ToString());
-            // gameTransformer.SwapCol(ran);
-            // gameTransformer.SwapRow(ran);
-            // gameTransformer.SwapNumber(ran);
+            gameTransformer.RandomTransform(ran, 4);
             LevelRunData.Instance.RandomGame = gameTransformer.Src;
             SceneManager.LoadScene(1);
         }
@@ -77,15 +72,18 @@ namespace UI
 
         public void Test()
         {
-            var matrix9X9 = new Matrix9X9(LevelRunData.Instance.GameSeed[0]);
-            LogUtil.Log(matrix9X9.ToString());
-            // matrix9X9.Transpose();
-            // matrix9X9.SwapRow(0,2);
-            // matrix9X9.SwapCol(0,2);
-            // matrix9X9.SwapBigCol(0,2);
-            // matrix9X9.SwapBigRow(0,2);
-            matrix9X9.SwapNumber(1,9);
-            LogUtil.Log(matrix9X9.ToString());
+            DebugUtil.RunOnDebug(() =>
+            {
+                var matrix9X9 = new Matrix9X9(LevelRunData.Instance.GameSeed[0]);
+                DebugUtil.Log(matrix9X9.ToString());
+                matrix9X9.Transpose();
+                matrix9X9.SwapRow(0,2);
+                matrix9X9.SwapCol(0,2);
+                matrix9X9.SwapBigCol(0,2);
+                matrix9X9.SwapBigRow(0,2);
+                matrix9X9.SwapNumber(1,9);
+                DebugUtil.Log(matrix9X9.ToString());
+            });
         }
     }
 }
