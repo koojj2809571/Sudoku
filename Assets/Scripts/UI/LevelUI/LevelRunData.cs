@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Util;
 
 // ReSharper disable once CheckNamespace
@@ -45,7 +46,12 @@ namespace UI
             {
                 if (_gameResult != null) return _gameResult;
                 _gameResult = new Dictionary<int,string>();
-                var data = AssetsUtil.LevelResultData;
+                var data = new List<string>();
+                if (PlayerPrefs.HasKey("Records"))
+                {
+                    var record = PlayerPrefs.GetString("Records");
+                    data = record.Split(",").ToList();
+                }
                 if (data.Count <= 0) return _gameResult;
                 foreach (var split in data.Select(e => e.Split("-")))
                 {
@@ -75,7 +81,7 @@ namespace UI
             }
             if(!needUpdate) return;
             var result = _gameResult.Select(kv => $"{kv.Key}-{kv.Value}").ToList();
-            AssetsUtil.LevelResultData = result;
+            PlayerPrefs.SetString("Records", string.Join(",", result));
         }
 
         private void Start()
