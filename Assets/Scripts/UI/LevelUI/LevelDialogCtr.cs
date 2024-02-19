@@ -12,8 +12,8 @@ namespace UI
         private RectTransform _rectTrans;
         public GameObject levelItem;
         public GameObject levelParent;
-        private static float SW => Screen.width;
-        private static float SH => Screen.height;
+        private static float SW => 1440;
+        private static float SH => 2960;
         
         private void Start()
         {
