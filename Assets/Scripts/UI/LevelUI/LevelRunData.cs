@@ -55,7 +55,10 @@ namespace UI
                 if (data.Count <= 0) return _gameResult;
                 foreach (var split in data.Select(e => e.Split("-")))
                 {
-                    _gameResult.Add(int.Parse(split[0]), split[1]);
+                    if (int.TryParse(split[0], out var key))
+                    {
+                        _gameResult.Add(key, split[1]);
+                    }
                 }
                 return _gameResult;
             }
@@ -63,6 +66,7 @@ namespace UI
 
         public void UpdateLevelResult(string finishTime)
         {
+            if (SelectedGameIndex == -1) return;
             var hasRecord = _gameResult.ContainsKey(SelectedGameIndex);
 
             bool needUpdate;

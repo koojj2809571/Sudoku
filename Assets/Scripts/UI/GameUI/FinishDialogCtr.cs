@@ -24,6 +24,7 @@ namespace UI
         {
             NumberRunData.Instance.Generate();
             GameUIManager.Instance.uiDialogCtr.HideDialog();
+            NumberRunData.Instance.dataCtr.gamePause = false;
         }
 
         public void NextLevel()
@@ -40,6 +41,7 @@ namespace UI
             }
             NumberRunData.Instance.Generate();
             GameUIManager.Instance.uiDialogCtr.HideDialog();
+            NumberRunData.Instance.dataCtr.gamePause = false;
         }
 
         public void SetFinishType(DialogType type)
