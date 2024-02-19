@@ -24,7 +24,8 @@ namespace UI
             GameUIManager.Instance.uiDialogCtr.ShowDialog(DialogType.Pause);
             // GameUIManager.Instance.finishDialogCtr.NextLevel();
             // NumberRunData.Instance.dataCtr.RandomNumber();
-            // LogUtil.Log(NumberRunData.Instance.dataCtr.answer.LogStr());
+            // DebugUtil.Log(LevelRunData.Instance.CurGame.LogStr());
+            // DebugUtil.Log(NumberRunData.Instance.dataCtr.answer.LogStr());
         }
         
         public void ContinueGame()

@@ -39,9 +39,6 @@ namespace Game.RunData
         }
 
         [HideInInspector]
-        public InputNumber InputNumberDelegate;
-        
-        [HideInInspector]
         public NumberBgGradient NumberGradientDelegate;
 
         public string CurKey

@@ -111,7 +111,7 @@ namespace Game.Config
                 numberData[i].Value = curGame[i];
                 numberData[i].editAble = false;
             }
-            answer = numberData.Select(e => e.value).ToList();
+            answer = curGame;
             RowData = NumDataUtil.GetDataByRegion(Region.Row);
             ColData = NumDataUtil.GetDataByRegion(Region.Column);
             AreaData = NumDataUtil.GetDataByRegion(Region.Area);

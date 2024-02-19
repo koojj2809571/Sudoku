@@ -47,24 +47,9 @@ namespace Game.Item
                     Data.dataCtr.errorKeyCache.Remove(ItemErrorKey);
                 }
 
-                //记录上一个值
-                var lastValue = this.value;
-                
                 //赋值
                 this.value = value;
                 num.text = value != 0 ? this.value.ToString() : "";
-                
-                //记录数字使用次数
-                if (lastValue == 0 && value != 0)
-                {
-                    Data.InputNumberDelegate(value, 1);
-                }
-
-                //清空时扣减上一个数字使用次数
-                if (lastValue != 0)
-                {
-                    Data.InputNumberDelegate(lastValue, -1);
-                }
                 
                 //检查数字是否错误
                 if (!CheckError()) return;
@@ -185,12 +170,14 @@ namespace Game.Item
 
         private bool CheckError()
         {
-            if(value == 0) return false;
-            var usedInRow = NumDataUtil.UsedInRegion(Region.Row,row, value);
-            var usedInCol = NumDataUtil.UsedInRegion(Region.Column,column, value);
-            var usedInArea = NumDataUtil.UsedInRegion(Region.Area,area, value);
+            if(Data.dataCtr.isGenerating || value == 0) return false;
+            // var usedInRow = NumDataUtil.UsedInRegion(Region.Row,row, value);
+            // var usedInCol = NumDataUtil.UsedInRegion(Region.Column,column, value);
+            // var usedInArea = NumDataUtil.UsedInRegion(Region.Area,area, value);
+            //
+            // error = usedInRow || usedInCol || usedInArea;
             
-            error = usedInRow || usedInCol || usedInArea;
+            error = value != Data.dataCtr.answer[itemIndex];
 
             return error;
         }

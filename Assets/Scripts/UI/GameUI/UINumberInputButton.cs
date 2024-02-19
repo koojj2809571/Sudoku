@@ -1,3 +1,4 @@
+using System.Linq;
 using Game.RunData;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,26 +7,21 @@ using UnityEngine.UI;
 namespace UI
 {
 
-    public delegate void InputNumber(int number, int changeValue);
-    
     public class UINumberInputButton : MonoBehaviour
     {
         
         public int content;
         public Text number;
-        public int numberUsedTimes;
 
         private bool _canClick;
 
         private string NumText => content.ToString();
         private NumberRunData NumRunData => NumberRunData.Instance;
-        
-        void Start()
+
+        private void Start()
         {
             number.text = NumText;
-            numberUsedTimes = 0;
             _canClick = true;
-            NumRunData.InputNumberDelegate += OnInputNumber;
         }
 
         public void OnNumBtClick()
@@ -42,14 +38,19 @@ namespace UI
             NumRunData.CurItem.Value = content;
             NumRunData.CurItem.ClearRelationSquareNote();
             NumRunData.FindFinishedRelationSquares();
+            CheckCanClickCurNum();
             NumRunData.CheckSuccess();
         }
 
-        private void OnInputNumber(int numberValue, int changeValue)
+        private void CheckCanClickCurNum()
         {
-            if(numberValue != content) return;
-            numberUsedTimes += changeValue;
-            _canClick = numberUsedTimes < 9;
+            var allContain = NumRunData.dataCtr.AreaData.All(
+                area => area.Select(
+                    e => e.value
+                ).ToList().Contains(content)
+            );
+            if (!allContain) return;
+            _canClick = false;
             number.text = _canClick ? NumText : "";
         }
     }
