@@ -39,6 +39,7 @@ namespace Game.Item
 
         public int Value
         {
+            get => value;
             set
             {
                 //赋值前移除错误记录缓存
