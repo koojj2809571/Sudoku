@@ -102,6 +102,7 @@ namespace Game.Config
             var curGame = LevelRunData.Instance.CurGame;
             if (curGame.Count == 0)
             {
+                isGenerating = false;
                 RandomNumber();
                 return;
             }
@@ -111,7 +112,7 @@ namespace Game.Config
                 numberData[i].Value = curGame[i];
                 numberData[i].editAble = false;
             }
-            answer = curGame;
+            answer = curGame.ToList();
             RowData = NumDataUtil.GetDataByRegion(Region.Row);
             ColData = NumDataUtil.GetDataByRegion(Region.Column);
             AreaData = NumDataUtil.GetDataByRegion(Region.Area);

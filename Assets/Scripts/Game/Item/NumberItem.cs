@@ -42,6 +42,7 @@ namespace Game.Item
             get => value;
             set
             {
+                if(this.value == value) return;
                 //赋值前移除错误记录缓存
                 if (Data.dataCtr.errorKeyCache.Contains(ItemErrorKey))
                 {
@@ -49,8 +50,7 @@ namespace Game.Item
                 }
 
                 //赋值
-                this.value = value;
-                num.text = value != 0 ? this.value.ToString() : "";
+                SetValue(value);
                 
                 //检查数字是否错误
                 if (!CheckError()) return;
@@ -67,6 +67,12 @@ namespace Game.Item
                 }
 
             }
+        }
+
+        public void SetValue(int v)
+        {
+            value = v;
+            num.text = value != 0 ? value.ToString() : "";
         }
         
         private void Start()

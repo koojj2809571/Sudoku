@@ -1,4 +1,4 @@
-using System;
+using Game;
 using Game.RunData;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,15 +30,19 @@ namespace UI
 
         public void ClickRestart()
         {
-            Data.Generate();
+            // Data.Generate();
+            CommandRecorder.Instance.Undo();
         }
 
         public void ClickDeleteItem()
         {
             if(Data.CurKey == "")return;
             if(Data.dataCtr.numberData.Count == 0) return;
-            if (!Data.CurItem.editAble) return; 
-            Data.CurItem.Value = 0;
+            var curItem = Data.CurItem;
+            if (!curItem.editAble) return;
+            var lastValue = curItem.Value;
+            curItem.Value = 0;
+            CommandRecorder.Instance.AddCommand(curItem.itemIndex, lastValue, curItem.ItemKey, curItem.error);
         }
 
         public void ClickNoteSwitcher()

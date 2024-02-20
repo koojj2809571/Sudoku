@@ -1,4 +1,5 @@
 using System.Linq;
+using Game;
 using Game.RunData;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,35 +23,38 @@ namespace UI
         {
             number.text = NumText;
             _canClick = true;
+            CommandRecorder.Instance.InputButtons.Add(content,this);
         }
 
         public void OnNumBtClick()
         {
             if(!_canClick) return;
             if(NumRunData.CurKey == "") return;
-            if(!NumRunData.CurItem.editAble) return;
-            if (NumRunData.dataCtr.isNote && NumRunData.CurItem.value == 0)
+            var curItem = NumRunData.CurItem;
+            var lastValue = curItem.Value;
+            if(!curItem.editAble) return;
+            if (NumRunData.dataCtr.isNote && curItem.value == 0)
             {
-                NumRunData.CurItem.notePanel.SetNoteVisible(content, true);
+                curItem.notePanel.SetNoteVisible(content, true);
                 return;
             }
-            NumRunData.CurItem.notePanel.HideNoteSquare();
-            NumRunData.CurItem.Value = content;
-            NumRunData.CurItem.ClearRelationSquareNote();
+
+            curItem.notePanel.HideNoteSquare();
+            CommandRecorder.Instance.AddCommand(curItem.itemIndex, lastValue, curItem.ItemKey, curItem.error);
+            curItem.Value = content;
+            curItem.ClearRelationSquareNote();
             NumRunData.FindFinishedRelationSquares();
             CheckCanClickCurNum();
             NumRunData.CheckSuccess();
         }
 
-        private void CheckCanClickCurNum()
+        public void CheckCanClickCurNum()
         {
-            var allContain = NumRunData.dataCtr.AreaData.All(
+            _canClick = !NumRunData.dataCtr.AreaData.All(
                 area => area.Select(
                     e => e.value
                 ).ToList().Contains(content)
             );
-            if (!allContain) return;
-            _canClick = false;
             number.text = _canClick ? NumText : "";
         }
     }
