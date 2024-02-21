@@ -29,6 +29,7 @@ namespace UI
         public void OnNumBtClick()
         {
             if(!_canClick) return;
+            if (!NumRunData.GameReady) return;
             if(NumRunData.CurKey == "") return;
             var curItem = NumRunData.CurItem;
             var lastValue = curItem.Value;

@@ -37836,6 +37836,7 @@ GameObject:
   m_Component:
   - component: {fileID: 740377888}
   - component: {fileID: 740377887}
+  - component: {fileID: 740377889}
   m_Layer: 0
   m_Name: DataManager
   m_TagString: Untagged
@@ -37864,15 +37865,8 @@ MonoBehaviour:
     sameColor: {r: 0.7137255, g: 0.8235295, b: 1, a: 1}
     errorColor: {r: 1, g: 0.3254902, b: 0.3254902, a: 1}
     finishItemGradientColor: {r: 0.56078434, g: 0.47843137, b: 0.4, a: 0.65882355}
-  dataCtr:
-    curKey: 
-    errorTimes: 0
-    gamePause: 0
-    isNote: 0
-    isGenerating: 0
-    errorKeyCache: []
-    numberData: []
-    answer: 
+    startBgColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
+  dataCtr: {fileID: 740377889}
 --- !u!4 &740377888
 Transform:
   m_ObjectHideFlags: 0
@@ -37888,6 +37882,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &740377889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740377886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14ab1776fb9a444a9e862de09d5ea816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curKey: 
+  errorTimes: 0
+  gamePause: 0
+  isNote: 0
+  isGenerating: 0
+  startAniProcessing: 0
+  errorKeyCache: []
+  numberData: []
+  answer: 
 --- !u!1 &762851068
 GameObject:
   m_ObjectHideFlags: 0

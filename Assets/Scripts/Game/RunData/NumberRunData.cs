@@ -16,11 +16,11 @@ using Util;
  * 5.随机模式可选择简单,中等,困难
  * 6.按100个关卡为9X9的矩阵种子, 以变换矩阵(交换大小行/大小列/数字,矩阵装置)形式生成随机游戏,提高生成速度,日常挑战保证随机结果当日不变化
  * 7.42,43,44关卡数据生成错误带修正
+ * 8.游戏中新增回退操作按钮,回退上一步操作
  *
  * 待完成(...):
  *
  * 可选完成项(?):
- * 8.游戏中新增回退操作按钮,回退上一步操作
  */
 
 namespace Game.RunData
@@ -30,7 +30,7 @@ namespace Game.RunData
         [Header("颜色配置")]
         public ColorConfig colorConf;
 
-        [Header("数据配置")] 
+        [HideInInspector] 
         public NumberDataCtr dataCtr;
 
         public Color OriginTextColor(bool editAble)
@@ -39,7 +39,7 @@ namespace Game.RunData
         }
 
         [HideInInspector]
-        public NumberBgGradient NumberGradientDelegate;
+        public NumberGradient NumberGradientDelegate;
 
         public string CurKey
         {
@@ -63,10 +63,17 @@ namespace Game.RunData
         public int CurItemIndex => CurKeyInvalid ? -1 : int.Parse(CurKeyArr[3]);
         public NumberItem CurItem => dataCtr.NumDict[dataCtr.curKey];
 
+        public bool GameReady => !dataCtr.isGenerating && !dataCtr.startAniProcessing;
+
+        private void Start()
+        {
+            dataCtr = gameObject.GetComponent<NumberDataCtr>();
+        }
+
         public void Generate()
         {
             dataCtr.ClearData();
-            dataCtr.GenerateBySeed();
+            dataCtr.GenerateGame();
         }
         
 
@@ -103,8 +110,15 @@ namespace Game.RunData
             }
             if (result.Count > 0)
             {
-                NumberGradientDelegate(result.ConvertAll((e) => e.ItemKey));
+                NumberGradientDelegate(new GradientParam
+                {
+                    Type = ItemAniType.BgAni,
+                    ProcessAniNumbers = result.ConvertAll((e) => e.ItemKey),
+                    Target = colorConf.finishItemGradientColor,
+                    IsPlayBack = true
+                });
             }
         }
+        
     }
 }

@@ -30,12 +30,13 @@ namespace UI
 
         public void ClickRestart()
         {
-            // Data.Generate();
+            if (!Data.GameReady) return;
             CommandRecorder.Instance.Undo();
         }
 
         public void ClickDeleteItem()
         {
+            if (!Data.GameReady) return;
             if(Data.CurKey == "")return;
             if(Data.dataCtr.numberData.Count == 0) return;
             var curItem = Data.CurItem;
@@ -47,11 +48,13 @@ namespace UI
 
         public void ClickNoteSwitcher()
         {
+            if (!Data.GameReady) return;
             NumberRunData.Instance.dataCtr.isNote = !NumberRunData.Instance.dataCtr.isNote;
         }
 
         public void ClickTip()
         {
+            if (!Data.GameReady) return;
             if (_curTimes <= 0) return;
             if (!Data.CurItem.editAble) return;
             if (Data.CurItem.Value != 0) return;

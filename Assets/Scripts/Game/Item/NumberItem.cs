@@ -1,13 +1,30 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Game.RunData;
 using UI;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game.Item
 {
-    public delegate void NumberBgGradient(List<string> finishNumbers);
+    public enum ItemAniType
+    {
+        BgAni, TextAni
+    }
+
+    public class GradientParam
+    {
+        public ItemAniType Type;
+        public Color Target;
+        public List<string> ProcessAniNumbers;
+        public float Duration = 0.3f;
+        public bool IsPlayBack;
+
+        public bool InValidParam(string key) => ProcessAniNumbers == null || !ProcessAniNumbers.Contains(key);
+    }
+    public delegate void NumberGradient(GradientParam param);
     public class NumberItem: MonoBehaviour
     {
 
@@ -78,35 +95,44 @@ namespace Game.Item
         private void Start()
         {
             Init();
-            Data.NumberGradientDelegate += OnBgGradient;
+            Data.NumberGradientDelegate += OnGradient;
         }
 
-        private void OnBgGradient(List<string> finishNumbers)
+        private void OnGradient(GradientParam param)
         {
-            if (!finishNumbers.Contains(ItemKey)) return;
-            Tweener doColor = aniMask.DOColor(Data.colorConf.finishItemGradientColor, 0.3f);
+            if (param.InValidParam(ItemKey)) return;
+            Tweener doColor = param.Type switch
+            {
+                ItemAniType.BgAni => aniMask.DOColor(param.Target, param.Duration),
+                ItemAniType.TextAni => num.DOColor(param.Target, param.Duration),
+                _ => throw new ArgumentOutOfRangeException(nameof(param.Type), param.Type, "渐变动画参数异常")
+            };
+            if(!param.IsPlayBack) return;
             doColor.SetAutoKill(false);
             doColor.OnComplete(() =>
             {
-                doColor.PlayBackwards();
+                aniMask.DOPlayBackwards();
             });
         }
 
         private void Update()
         {
+            if (Data.dataCtr.startAniProcessing) return;
             UpdateErrorColor();
             UpdateItemColor();
         }
 
         private void Init()
         {
+            aniMask.color = Data.colorConf.startBgColor;
+            num.color = num.color.WithAlpha(0);
+            
             var rootRowNumber = 0;
             var areNumber = 0;
             var subRowNumber = 0;
             var subItemNumber = 0;
             foreach (var trans in gameObject.GetComponentsInParent<Transform>())
             {
-                // LogUtil.Log($"{trans.tag} -- {GetCountByName(trans.name)}");
                 switch (trans.tag)
                 {
                     case "RootRow":
@@ -131,19 +157,9 @@ namespace Game.Item
             itemIndex = (row - 1) * 9 + column - 1;
             Data.dataCtr.numberData.Add(this);
             Data.dataCtr.NumDict.Add(ItemKey, this);
-            // Data.RowArr[row - 1, column - 1] = this;
-            // Data.ColArr[column - 1, row - 1] = this;
             if (Data.dataCtr.numberData.Count < 81) return;
             Data.dataCtr.SortData();
-            var levelRunData = LevelRunData.Instance;
-            if (levelRunData == null)
-            {
-                Data.dataCtr.RandomNumber();
-            }
-            else
-            {
-                Data.dataCtr.GenerateBySeed();
-            }
+            Data.dataCtr.GenerateGame();
         }
 
         private int GetCountByName(string goName)
@@ -178,12 +194,6 @@ namespace Game.Item
         private bool CheckError()
         {
             if(Data.dataCtr.isGenerating || value == 0) return false;
-            // var usedInRow = NumDataUtil.UsedInRegion(Region.Row,row, value);
-            // var usedInCol = NumDataUtil.UsedInRegion(Region.Column,column, value);
-            // var usedInArea = NumDataUtil.UsedInRegion(Region.Area,area, value);
-            //
-            // error = usedInRow || usedInCol || usedInArea;
-            
             error = value != Data.dataCtr.answer[itemIndex];
 
             return error;
@@ -197,6 +207,7 @@ namespace Game.Item
 
         public void OnItemSelected()
         {
+            if (!Data.GameReady) return;
             NumberRunData.Instance.CurKey = ItemKey;
         }
 
@@ -212,15 +223,15 @@ namespace Game.Item
                 var areaItem = sameArea[i];
                 if (rowItem.ItemKey != ItemKey && rowItem.notePanel.ShowNote)
                 {
-                    rowItem.notePanel.SetNoteVisible(this.value, false);
+                    rowItem.notePanel.SetNoteVisible(value, false);
                 }
                 if (colItem.ItemKey != ItemKey && colItem.notePanel.ShowNote)
                 {
-                    colItem.notePanel.SetNoteVisible(this.value, false);
+                    colItem.notePanel.SetNoteVisible(value, false);
                 }
                 if (areaItem.ItemKey != ItemKey && areaItem.notePanel.ShowNote)
                 {
-                    areaItem.notePanel.SetNoteVisible(this.value, false);
+                    areaItem.notePanel.SetNoteVisible(value, false);
                 }
             }
         }

@@ -8,9 +8,9 @@ namespace UI
     public class UITopActionRowCtr : MonoBehaviour
     {
         
-        public UIDialogCtr pausePanel;
         public void ClickBack()
         {
+            if (!NumberRunData.Instance.GameReady) return;
             SceneManager.LoadScene(0);
         }
         
@@ -21,11 +21,8 @@ namespace UI
         
         public void ClickPause()
         {
+            if (!NumberRunData.Instance.GameReady) return;
             GameUIManager.Instance.uiDialogCtr.ShowDialog(DialogType.Pause);
-            // GameUIManager.Instance.finishDialogCtr.NextLevel();
-            // NumberRunData.Instance.dataCtr.RandomNumber();
-            // DebugUtil.Log(LevelRunData.Instance.CurGame.LogStr());
-            // DebugUtil.Log(NumberRunData.Instance.dataCtr.answer.LogStr());
         }
         
         public void ContinueGame()

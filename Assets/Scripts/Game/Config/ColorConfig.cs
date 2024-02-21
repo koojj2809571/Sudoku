@@ -14,5 +14,6 @@ namespace Game.Config
         public Color sameColor;
         public Color errorColor;
         public Color finishItemGradientColor;
+        public Color startBgColor;
     }
 }

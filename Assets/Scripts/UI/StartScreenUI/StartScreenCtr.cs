@@ -30,7 +30,7 @@ namespace UI
             var seed = DateTimeOffset.Now.ToUnixTimeSeconds().ToString().GetHashCode();
             LevelRunData.Instance.RanSeed = seed;
             var ran = new System.Random(seed);
-            var gameIndex = ran.Next(81);
+            var gameIndex = ran.Next(100);
             var gameTransformer = new Matrix9X9(LevelRunData.Instance.GameSeed[gameIndex]);
             gameTransformer.RandomTransform(ran, 3);
             LevelRunData.Instance.RandomGame = gameTransformer.Src;
@@ -45,7 +45,7 @@ namespace UI
             var seed = $"{now.Year}-{now.Month}-{now.Day}".GetHashCode();
             LevelRunData.Instance.RanSeed = seed;
             var ran = new System.Random(seed);
-            var gameIndex = ran.Next(81);
+            var gameIndex = ran.Next(100);
             
             var gameTransformer = new Matrix9X9(LevelRunData.Instance.GameSeed[gameIndex]);
             gameTransformer.RandomTransform(ran, 4);
