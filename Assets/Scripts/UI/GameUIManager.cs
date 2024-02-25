@@ -14,14 +14,18 @@ namespace UI
 
         // private void Start()
         // {
-        //     var levelIndex = LevelRunData.Instance.SelectedGameIndex;
-        //     levelName.text = levelIndex == -1 ? "Daily Challenge" : $"Level {levelIndex + 1}";
+        //     UpdateGameName();
         // }
 
         private void Update()
         {
+            UpdateGameName();
+        }
+
+        private void UpdateGameName()
+        {
             var levelIndex = LevelRunData.Instance.SelectedGameIndex;
-            levelName.text = levelIndex == -1 ? "Daily Challenge" : $"Level {levelIndex + 1}";
+            levelName.text = levelIndex == -1 ? "Daily Challenge" : $"Level - {levelIndex + 1}";
         }
     }
 }

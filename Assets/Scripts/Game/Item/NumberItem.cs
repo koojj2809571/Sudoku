@@ -73,14 +73,12 @@ namespace Game.Item
                 if (!CheckError()) return;
                 
                 //记录错误次数并缓存错误item键
-                if (!Data.dataCtr.errorKeyCache.Contains(ItemErrorKey) && error)
+                if (Data.dataCtr.errorKeyCache.Contains(ItemErrorKey) || !error) return;
+                Data.dataCtr.errorKeyCache.Add(ItemErrorKey);
+                Data.dataCtr.errorTimes += 1;
+                if (Data.dataCtr.errorTimes >= 5)
                 {
-                    Data.dataCtr.errorKeyCache.Add(ItemErrorKey);
-                    Data.dataCtr.errorTimes += 1;
-                    if (Data.dataCtr.errorTimes >= 5)
-                    {
-                        GameUIManager.Instance.uiDialogCtr.ShowDialog(DialogType.FinishWithFail);
-                    }
+                    GameUIManager.Instance.uiDialogCtr.ShowDialog(DialogType.FinishWithFail);
                 }
 
             }
@@ -92,12 +90,6 @@ namespace Game.Item
             num.text = value != 0 ? value.ToString() : "";
         }
         
-        private void Start()
-        {
-            Init();
-            Data.NumberGradientDelegate += OnGradient;
-        }
-
         private void OnGradient(GradientParam param)
         {
             if (param.InValidParam(ItemKey)) return;
@@ -122,49 +114,15 @@ namespace Game.Item
             UpdateItemColor();
         }
 
-        private void Init()
+        public void Init(int a, int r, int c, int idx)
         {
+            area = a;
+            row = r;
+            column = c;
+            itemIndex = idx;
             aniMask.color = Data.colorConf.startBgColor;
             num.color = num.color.WithAlpha(0);
-            
-            var rootRowNumber = 0;
-            var areNumber = 0;
-            var subRowNumber = 0;
-            var subItemNumber = 0;
-            foreach (var trans in gameObject.GetComponentsInParent<Transform>())
-            {
-                switch (trans.tag)
-                {
-                    case "RootRow":
-                        rootRowNumber = GetCountByName(trans.name);
-                        break;
-                    case "Area":
-                        areNumber = GetCountByName(trans.name);
-                        break;
-                    case "SubRow":
-                        subRowNumber = GetCountByName(trans.name);
-                        break;
-                    case "SubItem":
-                        subItemNumber = GetCountByName(trans.name);
-                        break;
-                }
-            }
-
-            area = (rootRowNumber - 1) * 3 + areNumber;
-            row = (rootRowNumber - 1) * 3 + subRowNumber;
-            column = (areNumber - 1) * 3 + subItemNumber;
-
-            itemIndex = (row - 1) * 9 + column - 1;
-            Data.dataCtr.numberData.Add(this);
-            Data.dataCtr.NumDict.Add(ItemKey, this);
-            if (Data.dataCtr.numberData.Count < 81) return;
-            Data.dataCtr.SortData();
-            Data.dataCtr.GenerateGame();
-        }
-
-        private int GetCountByName(string goName)
-        {
-            return int.Parse(goName[^1..]);
+            Data.NumberGradientDelegate += OnGradient;
         }
 
         private void UpdateItemColor()
@@ -211,29 +169,5 @@ namespace Game.Item
             NumberRunData.Instance.CurKey = ItemKey;
         }
 
-        public void ClearRelationSquareNote()
-        {
-            var sameRow = Data.dataCtr.RowData[row - 1];
-            var sameCol = Data.dataCtr.ColData[column - 1];
-            var sameArea = Data.dataCtr.AreaData[area - 1];
-            for (var i = 0; i < sameRow.Count; i++)
-            {
-                var rowItem = sameRow[i];
-                var colItem = sameCol[i];
-                var areaItem = sameArea[i];
-                if (rowItem.ItemKey != ItemKey && rowItem.notePanel.ShowNote)
-                {
-                    rowItem.notePanel.SetNoteVisible(value, false);
-                }
-                if (colItem.ItemKey != ItemKey && colItem.notePanel.ShowNote)
-                {
-                    colItem.notePanel.SetNoteVisible(value, false);
-                }
-                if (areaItem.ItemKey != ItemKey && areaItem.notePanel.ShowNote)
-                {
-                    areaItem.notePanel.SetNoteVisible(value, false);
-                }
-            }
-        }
     }
 }

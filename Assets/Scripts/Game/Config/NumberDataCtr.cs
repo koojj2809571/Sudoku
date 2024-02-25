@@ -95,6 +95,7 @@ namespace Game.Config
                 RowData = NumDataUtil.GetDataByRegion(Region.Row);
                 ColData = NumDataUtil.GetDataByRegion(Region.Column);
                 AreaData = NumDataUtil.GetDataByRegion(Region.Area);
+                DebugUtil.Log(LevelRunData.Instance.RanSeed.ToString());
                 RanUtil.RandomEmpty(LevelRunData.Instance.RanSeed, LevelCount);
             }
             StartCoroutine(nameof(PlayStartAni));

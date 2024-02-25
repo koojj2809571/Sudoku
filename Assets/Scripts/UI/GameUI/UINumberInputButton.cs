@@ -43,7 +43,7 @@ namespace UI
             curItem.notePanel.HideNoteSquare();
             CommandRecorder.Instance.AddCommand(curItem.itemIndex, lastValue, curItem.ItemKey, curItem.error);
             curItem.Value = content;
-            curItem.ClearRelationSquareNote();
+            curItem.notePanel.ClearRelationSquareNote();
             NumRunData.FindFinishedRelationSquares();
             CheckCanClickCurNum();
             NumRunData.CheckSuccess();

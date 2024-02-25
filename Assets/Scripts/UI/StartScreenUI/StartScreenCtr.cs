@@ -42,7 +42,7 @@ namespace UI
             LevelRunData.Instance.diffLevel = level;
             LevelRunData.Instance.SelectedGameIndex = -1;
             var now = DateTime.Now;
-            var seed = $"{now.Year}-{now.Month}-{now.Day}".GetHashCode();
+            var seed = int.Parse($"{now.Year}{now.Month}{now.Day}");
             LevelRunData.Instance.RanSeed = seed;
             var ran = new System.Random(seed);
             var gameIndex = ran.Next(100);

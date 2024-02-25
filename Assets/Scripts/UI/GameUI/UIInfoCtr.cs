@@ -14,7 +14,6 @@ namespace UI
         public float totalTime;
         public bool stopTimer = true;
         
-        // Start is called before the first frame update
         private void Start()
         {
             errorInfo.color = NumberRunData.Instance.colorConf.errorColor;
